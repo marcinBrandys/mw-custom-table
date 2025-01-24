@@ -5,6 +5,66 @@ export default {
     },
   },
   properties: {
+    dataSource: {
+      label: {
+        en: "Data source",
+      },
+      section: "settings",
+      type: "Array",
+      defaultValue: [],
+      bindable: true,
+      options: {
+        item: {
+          type: "Object",
+          properties: {
+            value: {
+              label: {
+                en: "Value",
+              },
+              type: "String",
+            },
+            label: {
+              label: {
+                en: "Label",
+              },
+              type: "String",
+            }
+          },
+        }
+      },
+    },
+    columnConfig: {
+      label: {
+        en: "Columns config",
+      },
+      section: "settings",
+      type: "Array",
+      defaultValue: [],
+      bindable: true,
+      options: {
+        item: {
+          type: "Object",
+          label: "Column config",
+          options: {
+            item: {
+              field: {
+                label: {
+                  en: "Field name",
+                },
+                type: "Text",
+              },
+              headerName: {
+                label: {
+                  en: "Label",
+                },
+                type: "Text",
+              },
+            },
+          },
+        },
+        fixed: false,
+      },
+    },
     foregroundColor: {
       label: {
         en: "Foreground color",

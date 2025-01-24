@@ -5,7 +5,7 @@
           class="mywork-custom-table--grid-table"
           :key="theme.key"
           :rowData="rowData"
-          :columnDefs="colDefs"
+          :columnDefs="columnDefs"
           :grid-options="{
             theme: theme.value,
           }"
@@ -51,27 +51,39 @@ export default {
         }),
       };
     },
-  },
-  data() {
-    const rowData = [
-      { make: "Tesla", model: "Model Y", price: 64950, electric: true },
-      { make: "Ford", model: "F-Series", price: 33850, electric: false },
-      { make: "Toyota", model: "Corolla", price: 29600, electric: false },
-    ];
+    defaultColumnDefs() {
+      const dataTemplate = this.content.dataSource?.[0];
 
-    // Column Definitions: Defines the columns to be displayed.
-    const colDefs = [
-      { field: "make" },
-      { field: "model" },
-      { field: "price" },
-      { field: "electric" }
-    ];
+      if (!dataTemplate) return [];
 
-    return {
-      rowData,
-      colDefs,
-    };
+      return Object.keys(dataTemplate).map((key) => ({
+        field: key,
+      }));
+    },
+    customColumnDefs() {
+      if (!this.isArrayPropDefined(this.content.columnConfig)) {
+        return [];
+      }
+
+      return this.content.columnConfig.map((column) => ({
+        field: column.field,
+        headerName: column.headerName,
+      }));
+    },
+    columnDefs() {
+      return this.isArrayPropDefined(this.content.columnConfig) ? this.customColumnDefs : this.defaultColumnDefs;
+    },
+    rowData() {
+      return this.content.dataSource ?? [];
+    },
   },
+  methods: {
+    isArrayPropDefined: (array) => {
+      return Array.isArray(array)
+        && array.length > 0
+        && array.every(item => item !== undefined);
+    }
+  }
 };
 </script>
 
