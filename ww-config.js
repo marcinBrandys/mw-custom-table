@@ -59,6 +59,13 @@ export default {
                 },
                 type: "Text",
               },
+              sortable: {
+                label: {
+                  en: "Sortable",
+                },
+                type: "OnOff",
+                defaultValue: true,
+              },
             },
           },
         },
@@ -86,7 +93,7 @@ export default {
         en: "Header background color",
       },
       type: "Color",
-      defaultValue: null,
+      defaultValue: "#FAFAFA",
       bindable: true,
     },
     borderColor: {
@@ -118,9 +125,9 @@ export default {
       defaultValue: "#717680",
       bindable: true,
     },
-    cellTextColor: {
+    textColor: {
       label: {
-        en: "Cell text color",
+        en: "Default text color",
       },
       type: "Color",
       defaultValue: "#181D27",
@@ -132,6 +139,19 @@ export default {
       },
       type: "Number",
       defaultValue: 14,
+      bindable: true,
+      options: {
+        min: 0,
+        max: 100,
+        step: 1,
+      }
+    },
+    headerFontSize: {
+      label: {
+        en: "Header font size",
+      },
+      type: "Number",
+      defaultValue: 12,
       bindable: true,
       options: {
         min: 0,

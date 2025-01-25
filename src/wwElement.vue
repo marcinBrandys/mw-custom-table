@@ -9,6 +9,7 @@
           :grid-options="{
             theme: theme.value,
           }"
+          :pagination="true"
       >
       </ag-grid-vue>
     </div>
@@ -35,16 +36,21 @@ export default {
           borderColor: this.content.borderColor,
           borderRadius: `${this.content.borderRadius}px`,
           browserColorScheme: "light",
-          cellTextColor: this.content.cellTextColor,
+          cellTextColor: this.content.textColor,
           columnBorder: false,
           fontFamily: 'Inter',
           foregroundColor: this.content.foregroundColor,
-          headerBackgroundColor: this.content.backgroundColor ?? this.content.headerBackgroundColor,
-          headerFontSize: `${this.content.fontSize}px`,
+          headerBackgroundColor: this.content.headerBackgroundColor,
+          headerColumnBorder: false,
+          headerFontSize: `${this.content.headerFontSize}px`,
+          headerVerticalPaddingScale: 0.5,
           dataFontSize: `${this.content.fontSize}px`,
           headerTextColor: this.content.headerTextColor,
           oddRowBackgroundColor: this.content.foregroundColor,
+          textColor: this.content.textColor,
           rowBorder: true,
+          rowHoverColor: this.content.foregroundColor,
+          rowVerticalPaddingScale: 0.5,
           sidePanelBorder: true,
           wrapperBorder: true,
           wrapperBorderRadius: `${this.content.borderRadius}px`,
@@ -58,6 +64,7 @@ export default {
 
       return Object.keys(dataTemplate).map((key) => ({
         field: key,
+        sortable: true,
       }));
     },
     customColumnDefs() {
@@ -68,6 +75,7 @@ export default {
       return this.content.columnConfig.map((column) => ({
         field: column.field,
         headerName: column.headerName,
+        sortable: column.sortable,
       }));
     },
     columnDefs() {
