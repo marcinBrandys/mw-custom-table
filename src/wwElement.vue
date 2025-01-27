@@ -10,6 +10,7 @@
             theme: theme.value,
           }"
           :pagination="true"
+          @grid-ready="onGridReady"
       >
       </ag-grid-vue>
     </div>
@@ -90,7 +91,15 @@ export default {
       return Array.isArray(array)
         && array.length > 0
         && array.every(item => item !== undefined);
-    }
+    },
+    onGridReady: function ({ api }) {
+      this.api = api;
+    },
+  },
+  data() {
+    return {
+      api: null,
+    };
   }
 };
 </script>
