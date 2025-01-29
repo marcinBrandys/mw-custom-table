@@ -1,4 +1,7 @@
 export default {
+  inherit: {
+    type: 'ww-text',
+  },
   editor: {
     label: {
       en: "Custom Table",

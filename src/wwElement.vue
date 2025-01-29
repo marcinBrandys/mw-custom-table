@@ -137,7 +137,7 @@ export default {
     onSelectionChanged({ api }) {
       const selectedRows = api.getSelectedNodes().map(({ data }) => data);
       this.$emit("trigger-event", {
-        name: "onModelUpdated",
+        name: "onSelectionChanged",
         event: {
           selectedRows,
         },
