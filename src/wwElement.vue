@@ -14,6 +14,10 @@
           :paginationPageSizeSelector="pagination.pageSizeSelector"
           :rowSelection="rowSelection"
           @grid-ready="onGridReady"
+          @first-data-rendered="onFirstDataRendered"
+          @model-updated="onModelUpdated"
+          @selection-changed="onSelectionChanged"
+          @pagination-changed="onPaginationChanged"
       >
       </ag-grid-vue>
     </div>
@@ -31,6 +35,7 @@ export default {
   props: {
     content: { type: Object, required: true },
   },
+  emits: ["trigger-event"],
   computed: {
     theme() {
       return {
@@ -108,13 +113,50 @@ export default {
     },
   },
   methods: {
-    isArrayPropDefined: function (array) {
+    isArrayPropDefined(array) {
       return Array.isArray(array)
         && array.length > 0
         && array.some(item => item !== null && item !== undefined);
     },
-    onGridReady: function ({ api }) {
+    onGridReady({ api }) {
       this.api = api;
+      this.$emit("trigger-event", {
+        name: "onTableReady",
+      });
+    },
+    onFirstDataRendered() {
+      this.$emit("trigger-event", {
+        name: "onFirstDataRendered",
+      });
+    },
+    onModelUpdated() {
+      this.$emit("trigger-event", {
+        name: "onModelUpdated",
+      });
+    },
+    onSelectionChanged({ api }) {
+      const selectedRows = api.getSelectedNodes().map(({ data }) => data);
+      this.$emit("trigger-event", {
+        name: "onModelUpdated",
+        event: {
+          selectedRows,
+        },
+      });
+    },
+    onPaginationChanged({ api }) {
+      const paginationState = {
+        pageSize: api.paginationGetPageSize(),
+        currentPage: api.paginationGetCurrentPage(),
+        totalPages: api.paginationGetTotalPages(),
+        totalElements: api.paginationGetRowCount(),
+        isLastPage: api.paginationIsLastPageFound(),
+      };
+      this.$emit("trigger-event", {
+        name: "onPaginationChanged",
+        event: {
+          ...paginationState,
+        },
+      });
     },
   },
   data() {

@@ -396,4 +396,46 @@ export default {
       },
     },
   },
+  triggerEvents: [
+    {
+      name: "onTableReady",
+      label: {
+        en: "onTableReady: The table has initialised and is ready for most api calls, but may not be fully rendered yet",
+      },
+    },
+    {
+      name: "onFirstDataRendered",
+      label: {
+        en: "onFirstDataRendered: Fired the first time data is rendered into the table",
+      },
+    },
+    {
+      name: "onModelUpdated",
+      label: {
+        en: "onModelUpdated: Displayed rows have changed. Triggered after sort, filter or tree expand / collapse events.",
+      },
+    },
+    {
+      name: "onSelectionChanged",
+      label: {
+        en: "onSelectionChanged: Triggered after selection changed. Pass selected rows array",
+      },
+      event: {
+        selectedRows: [],
+      },
+    },
+    {
+      name: "onPaginationChanged",
+      label: {
+        en: "onPaginationChanged: Triggered every time the paging state changes. Pass current pagination state",
+      },
+      event: {
+        pageSize: 10,
+        currentPage: 1,
+        totalPages: 5,
+        totalElements: 50,
+        isLastPage: false,
+      },
+    }
+  ],
 };
