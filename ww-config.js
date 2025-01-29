@@ -5,6 +5,7 @@ export default {
     },
   },
   properties: {
+    /* Settings - data */
     dataSource: {
       label: {
         en: "Data source",
@@ -33,6 +34,8 @@ export default {
         }
       },
     },
+
+    /* Settings - columns */
     columnConfig: {
       label: {
         en: "Columns config",
@@ -72,6 +75,8 @@ export default {
         fixed: false,
       },
     },
+
+    /* Settings - pagination */
     pagination: {
       label: {
         en: "Pagination",
@@ -131,92 +136,203 @@ export default {
         },
       },
     },
-    foregroundColor: {
+
+    /* Styles - colors */
+    colorSectionInfo: {
       label: {
-        en: "Foreground color",
+        en: "Colors",
       },
-      type: "Color",
-      defaultValue: "#FAFAFA",
-      bindable: true,
-    },
-    backgroundColor: {
-      label: {
-        en: "Background color",
-      },
-      type: "Color",
-      defaultValue: "#FFFFFF",
-      bindable: true,
-    },
-    headerBackgroundColor: {
-      label: {
-        en: "Header background color",
-      },
-      type: "Color",
-      defaultValue: "#FAFAFA",
-      bindable: true,
-    },
-    borderColor: {
-      label: {
-        en: "Border color",
-      },
-      type: "Color",
-      defaultValue: "#E9EAEB",
-      bindable: true,
-    },
-    borderRadius: {
-      label: {
-        en: "Border radius",
-      },
-      type: "Number",
-      defaultValue: 8,
-      bindable: true,
+      type: "Info",
       options: {
-        min: 0,
-        max: 100,
-        step: 1,
-      }
-    },
-    headerTextColor: {
-      label: {
-        en: "Header text color",
+        text: {
+          en: "Colors",
+        },
       },
-      type: "Color",
-      defaultValue: "#717680",
-      bindable: true,
     },
-    textColor: {
-      label: {
-        en: "Default text color",
+    color: {
+      type: "Object",
+      defaultValue: {
+        foreground: "#FAFAFA",
+        background: "#FFFFFF",
+        text: "#181D27"
       },
-      type: "Color",
-      defaultValue: "#181D27",
-      bindable: true,
-    },
-    fontSize: {
-      label: {
-        en: "Font size",
-      },
-      type: "Number",
-      defaultValue: 14,
-      bindable: true,
       options: {
-        min: 0,
-        max: 100,
-        step: 1,
-      }
-    },
-    headerFontSize: {
-      label: {
-        en: "Header font size",
+        item: {
+          foreground: {
+            label: {
+              en: "Foreground color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+          background: {
+            label: {
+              en: "Background color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+          text: {
+            label: {
+              en: "Default text color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+        },
       },
-      type: "Number",
-      defaultValue: 12,
-      bindable: true,
+    },
+
+    /* Styles - fonts */
+    fontSectionInfo: {
+      label: {
+        en: "Font Styles",
+      },
+      type: "Info",
       options: {
-        min: 0,
-        max: 100,
-        step: 1,
-      }
+        text: {
+          en: "Font Styles",
+        },
+      },
+    },
+    font: {
+      type: "Object",
+      defaultValue: {
+        fontSize: "14px",
+        fontFamily: "Inter",
+      },
+      options: {
+        item: {
+          fontSize: {
+            label: {
+              en: "Font - Font size",
+            },
+            type: "Length",
+            bindable: true,
+            options: {
+              unitChoices: [
+                {
+                  value: "px",
+                  label: "px",
+                  min: 1,
+                  max: 100
+                },
+              ],
+            },
+          },
+          fontFamily: {
+            type: "FontFamily",
+            label: {
+              en: "Font - Font Family",
+            },
+          },
+        },
+      },
+    },
+
+    /* Styles - border */
+    borderSectionInfo: {
+      label: {
+        en: "Border Styles",
+      },
+      type: "Info",
+      options: {
+        text: {
+          en: "Border Styles",
+        },
+      },
+    },
+    border: {
+      type: "Object",
+      defaultValue: {
+        color: "#E9EAEB",
+        radius: "8px",
+      },
+      options: {
+        item: {
+          color: {
+            label: {
+              en: "Border - color",
+            },
+            type: "Color",
+            defaultValue: "#E9EAEB",
+            bindable: true,
+          },
+          radius: {
+            label: {
+              en: "Border - radius",
+            },
+            type: "Length",
+            bindable: true,
+            options: {
+              unitChoices: [
+                {
+                  value: "px",
+                  label: "px",
+                  min: 0,
+                  max: 100
+                },
+              ]
+            }
+          },
+        }
+      },
+    },
+
+    /* Styles - header */
+    headerSectionInfo: {
+      label: {
+        en: "Header Styles",
+      },
+      type: "Info",
+      options: {
+        text: {
+          en: "Header Styles",
+        },
+      },
+    },
+    header: {
+      type: "Object",
+      defaultValue: {
+        backgroundColor: "#FAFAFA",
+        textColor: "#717680",
+        fontSize: "12px",
+      },
+      options: {
+        item: {
+          backgroundColor: {
+            label: {
+              en: "Header - Background color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+          textColor: {
+            label: {
+              en: "Header - Text color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+          fontSize: {
+            label: {
+              en: "Header - Font size",
+            },
+            type: "Length",
+            bindable: true,
+            options: {
+              unitChoices: [
+                {
+                  value: "px",
+                  label: "px",
+                  min: 1,
+                  max: 100
+                },
+              ]
+            }
+          }
+        },
+      },
     },
   },
 };
