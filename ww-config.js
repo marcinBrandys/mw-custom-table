@@ -72,6 +72,65 @@ export default {
         fixed: false,
       },
     },
+    pagination: {
+      label: {
+        en: "Pagination",
+      },
+      section: "settings",
+      type: "Object",
+      defaultValue: {
+        enabled: true,
+        pageSize: 50,
+        pageSizeOptions: [10, 25, 50, 100],
+      },
+      options: {
+        item: {
+          enabled: {
+            label: {
+              en: "Enabled",
+            },
+            type: "OnOff",
+            defaultValue: true,
+            bindable: true,
+          },
+          pageSize: {
+            label: {
+              en: "Default page size",
+            },
+            type: "Number",
+            defaultValue: 50,
+            bindable: true,
+            options: {
+              min: 1,
+              max: 1000,
+              step: 1,
+            }
+          },
+          pageSizeOptions: {
+            label: {
+              en: "Page size options"
+            },
+            type: "Array",
+            defaultValue: [10, 25, 50, 100],
+            bindable: true,
+            options: {
+              fixed: false,
+              item: {
+                label: {
+                  en: "Page size option",
+                },
+                type: "Number",
+                options: {
+                  min: 1,
+                  max: 1000,
+                  step: 1,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     foregroundColor: {
       label: {
         en: "Foreground color",

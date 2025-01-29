@@ -9,7 +9,9 @@
           :grid-options="{
             theme: theme.value,
           }"
-          :pagination="true"
+          :pagination="pagination.enabled"
+          :paginationPageSize="pagination.pageSize"
+          :paginationPageSizeSelector="pagination.pageSizeSelector"
           @grid-ready="onGridReady"
       >
       </ag-grid-vue>
@@ -85,9 +87,18 @@ export default {
     rowData() {
       return this.content.dataSource ?? [];
     },
+    pagination() {
+      return {
+        enabled: this.content?.pagination?.enabled ?? false,
+        pageSize: this.content?.pagination?.pageSize ?? 50,
+        pageSizeSelector: this.isArrayPropDefined(this.content?.pagination?.pageSizeOptions)
+            ? this.content?.pagination?.pageSizeOptions
+            : [10, 25, 50, 100],
+      };
+    },
   },
   methods: {
-    isArrayPropDefined: (array) => {
+    isArrayPropDefined: function (array) {
       return Array.isArray(array)
         && array.length > 0
         && array.every(item => item !== undefined);
