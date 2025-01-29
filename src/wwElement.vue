@@ -12,6 +12,7 @@
           :pagination="pagination.enabled"
           :paginationPageSize="pagination.pageSize"
           :paginationPageSizeSelector="pagination.pageSizeSelector"
+          :rowSelection="rowSelection"
           @grid-ready="onGridReady"
       >
       </ag-grid-vue>
@@ -35,6 +36,7 @@ export default {
       return {
         key: `custom-theme-${+new Date()}`,
         value: themeQuartz.withParams({
+          accentColor: this.content.color.brand,
           backgroundColor: this.content.color.background,
           borderColor: this.content.border.color,
           borderRadius: this.content.border.radius,
@@ -49,11 +51,12 @@ export default {
           headerVerticalPaddingScale: 0.5,
           dataFontSize: this.content.font.fontSize,
           headerTextColor: this.content.header.textColor ?? this.content.color.text,
-          oddRowBackgroundColor: this.content.color.foreground,
+          oddRowBackgroundColor: this.content.color.backgroundActive,
           textColor: this.content.color.text,
           rowBorder: true,
           rowHoverColor: this.content.color.foreground,
           rowVerticalPaddingScale: 0.5,
+          selectedRowBackgroundColor: this.content.color.foreground,
           sidePanelBorder: true,
           wrapperBorder: true,
           wrapperBorderRadius: this.content.border.radius,
@@ -86,6 +89,13 @@ export default {
     },
     rowData() {
       return this.content.dataSource ?? [];
+    },
+    rowSelection() {
+      if (!this.content.rowConfig?.selectionMode) return undefined;
+
+      return {
+        mode: this.content.rowConfig.selectionMode,
+      };
     },
     pagination() {
       return {

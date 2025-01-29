@@ -76,6 +76,51 @@ export default {
       },
     },
 
+    /* Settings - row */
+    rowConfig: {
+      label: {
+        en: "Row configuration",
+      },
+      section: "settings",
+      type: "Object",
+      defaultValue: {
+        selectionMode: null,
+      },
+      options: {
+        item: {
+          selectionMode: {
+            label: {
+              en: "Selection mode",
+            },
+            type: "TextSelect",
+            bindable: true,
+            options: {
+              options: [
+                {
+                  value: null,
+                  label: {
+                    en: "None",
+                  },
+                },
+                {
+                  value: "singleRow",
+                  label: {
+                    en: "Single selection",
+                  },
+                },
+                {
+                  value: "multiRow",
+                  label: {
+                    en: "Multi selection",
+                  },
+                }
+              ],
+            },
+          },
+        },
+      },
+    },
+
     /* Settings - pagination */
     pagination: {
       label: {
@@ -152,12 +197,21 @@ export default {
     color: {
       type: "Object",
       defaultValue: {
-        foreground: "#FAFAFA",
+        brand: "#FC8C59",
+        foreground: "#D5D7DA",
         background: "#FFFFFF",
+        backgroundActive: "#FAFAFA",
         text: "#181D27"
       },
       options: {
         item: {
+          brand: {
+            label: {
+              en: "Brand color",
+            },
+            type: "Color",
+            bindable: true,
+          },
           foreground: {
             label: {
               en: "Foreground color",
@@ -168,6 +222,13 @@ export default {
           background: {
             label: {
               en: "Background color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+          backgroundActive: {
+            label: {
+              en: "Active Background color",
             },
             type: "Color",
             bindable: true,
