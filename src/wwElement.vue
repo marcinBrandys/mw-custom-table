@@ -101,7 +101,7 @@ export default {
     isArrayPropDefined: function (array) {
       return Array.isArray(array)
         && array.length > 0
-        && array.every(item => item !== undefined);
+        && array.some(item => item !== null && item !== undefined);
     },
     onGridReady: function ({ api }) {
       this.api = api;
