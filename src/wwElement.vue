@@ -18,6 +18,7 @@
           @model-updated="onModelUpdated"
           @selection-changed="onSelectionChanged"
           @pagination-changed="onPaginationChanged"
+          @sort-changed="onSortChanged"
       >
       </ag-grid-vue>
     </div>
@@ -155,6 +156,18 @@ export default {
         name: "onPaginationChanged",
         event: {
           ...paginationState,
+        },
+      });
+    },
+    onSortChanged({ api }) {
+      const sortState = api.getColumnState().map(({ colId, sort }) => ({
+        field: colId,
+        sort,
+      }));
+      this.$emit("trigger-event", {
+        name: "onSortChanged",
+        event: {
+          sortState,
         },
       });
     },

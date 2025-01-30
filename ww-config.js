@@ -439,6 +439,24 @@ export default {
         totalElements: 50,
         isLastPage: false,
       },
+    },
+    {
+      name: "onSortChanged",
+      label: {
+        en: "onSortChanged: Triggered every time the sort state changes. Pass current sort state",
+      },
+      event: {
+        sortState: [
+          {
+            field: "id",
+            sortDirection: "desc",
+          },
+          {
+            field: "name",
+            sortDirection: null,
+          },
+        ],
+      },
     }
   ],
 };
