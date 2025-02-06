@@ -21,6 +21,8 @@
           @sort-changed="onSortChanged"
           @row-clicked="onRowClicked"
           @row-double-clicked="onRowDoubleClicked"
+          @cell-clicked="onCellClicked"
+          @cell-double-clicked="onCellDoubleClicked"
       >
       </ag-grid-vue>
     </div>
@@ -231,6 +233,36 @@ export default {
             data,
             index: rowIndex,
           }
+        },
+      });
+    },
+    onCellClicked({ data, rowIndex, value, colDef }) {
+      this.$emit("trigger-event", {
+        name: "onCellClicked",
+        event: {
+          cell: {
+            data: value,
+            fieldName: colDef.field,
+          },
+          row: {
+            data,
+            index: rowIndex,
+          },
+        },
+      });
+    },
+    onCellDoubleClicked({ data, rowIndex, value, colDef }) {
+      this.$emit("trigger-event", {
+        name: "onCellDoubleClicked",
+        event: {
+          cell: {
+            data: value,
+            fieldName: colDef.field,
+          },
+          row: {
+            data,
+            index: rowIndex,
+          },
         },
       });
     },

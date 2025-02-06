@@ -481,6 +481,38 @@ export default {
           index: 0,
         },
       },
+    },
+    {
+      name: "onCellClicked",
+      label: {
+        en: "onCellClicked",
+      },
+      event: {
+        cell: {
+          data: "data",
+          fieldName: "field",
+        },
+        row: {
+          data: {},
+          index: 0,
+        },
+      },
+    },
+    {
+      name: "onCellDoubleClicked",
+      label: {
+        en: "onCellDoubleClicked",
+      },
+      event: {
+        cell: {
+          data: "data",
+          fieldName: "field",
+        },
+        row: {
+          data: {},
+          index: 0,
+        },
+      },
     }
   ],
 };
