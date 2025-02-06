@@ -457,6 +457,30 @@ export default {
           },
         ],
       },
+    },
+    {
+      name: "onRowClicked",
+      label: {
+        en: "onRowClicked",
+      },
+      event: {
+        row: {
+          data: {},
+          index: 0,
+        },
+      },
+    },
+    {
+      name: "onRowDoubleClicked",
+      label: {
+        en: "onRowDoubleClicked",
+      },
+      event: {
+        row: {
+          data: {},
+          index: 0,
+        },
+      },
     }
   ],
 };

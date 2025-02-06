@@ -19,6 +19,8 @@
           @selection-changed="onSelectionChanged"
           @pagination-changed="onPaginationChanged"
           @sort-changed="onSortChanged"
+          @row-clicked="onRowClicked"
+          @row-double-clicked="onRowDoubleClicked"
       >
       </ag-grid-vue>
     </div>
@@ -207,6 +209,28 @@ export default {
         name: "onSortChanged",
         event: {
           sortState,
+        },
+      });
+    },
+    onRowClicked({ data, rowIndex }) {
+      this.$emit("trigger-event", {
+        name: "onRowClicked",
+        event: {
+          row: {
+            data,
+            index: rowIndex,
+          }
+        },
+      });
+    },
+    onRowDoubleClicked({ data, rowIndex }) {
+      this.$emit("trigger-event", {
+        name: "onRowDoubleClicked",
+        event: {
+          row: {
+            data,
+            index: rowIndex,
+          }
         },
       });
     },
