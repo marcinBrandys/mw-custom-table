@@ -35,8 +35,22 @@ export default {
   },
   props: {
     content: { type: Object, required: true },
+    uid: { type: String, required: true },
   },
   emits: ["trigger-event"],
+  setup(props) {
+    const { value: selectedRows, setValue: setSelectedRows } = wwLib.wwVariable.useComponentVariable({
+      uid: props.uid,
+      name: 'selectedRows',
+      type: 'array',
+      defaultValue: [],
+    });
+
+    return {
+      selectedRows,
+      setSelectedRows,
+    };
+  },
   computed: {
     theme() {
       return {
@@ -137,6 +151,7 @@ export default {
     },
     onSelectionChanged({ api }) {
       const selectedRows = api.getSelectedNodes().map(({ data }) => data);
+      this.setSelectedRows(selectedRows);
       this.$emit("trigger-event", {
         name: "onSelectionChanged",
         event: {
