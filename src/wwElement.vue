@@ -23,6 +23,7 @@
           @row-double-clicked="onRowDoubleClicked"
           @cell-clicked="onCellClicked"
           @cell-double-clicked="onCellDoubleClicked"
+          @column-header-clicked="onColumnHeaderClicked"
       >
       </ag-grid-vue>
     </div>
@@ -262,6 +263,16 @@ export default {
           row: {
             data,
             index: rowIndex,
+          },
+        },
+      });
+    },
+    onColumnHeaderClicked({ column }) {
+      this.$emit("trigger-event", {
+        name: "onColumnHeaderClicked",
+        event: {
+          column: {
+            fieldName: column.colDef.field,
           },
         },
       });

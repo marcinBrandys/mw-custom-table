@@ -513,6 +513,17 @@ export default {
           index: 0,
         },
       },
-    }
+    },
+    {
+      name: "onColumnHeaderClicked",
+      label: {
+        en: "onColumnHeaderClicked",
+      },
+      event: {
+        column: {
+          fieldName: "field",
+        },
+      },
+    },
   ],
 };
