@@ -41,14 +41,28 @@ export default {
   setup(props) {
     const { value: selectedRows, setValue: setSelectedRows } = wwLib.wwVariable.useComponentVariable({
       uid: props.uid,
-      name: 'selectedRows',
-      type: 'array',
+      name: "selectedRows",
+      type: "Array",
       defaultValue: [],
+    });
+    const { value: paginationState, setValue: setPaginationState } = wwLib.wwVariable.useComponentVariable({
+      uid: props.uid,
+      name: "paginationState",
+      type: "Array",
+      defaultValue: {
+        pageSize: 0,
+        currentPage: 0,
+        totalPages: 1,
+        totalElements: 0,
+        isLastPage: true,
+      },
     });
 
     return {
       selectedRows,
       setSelectedRows,
+      paginationState,
+      setPaginationState,
     };
   },
   computed: {
@@ -167,6 +181,7 @@ export default {
         totalElements: api.paginationGetRowCount(),
         isLastPage: api.paginationIsLastPageFound(),
       };
+      this.setPaginationState(paginationState);
       this.$emit("trigger-event", {
         name: "onPaginationChanged",
         event: {
