@@ -48,7 +48,7 @@ export default {
     const { value: paginationState, setValue: setPaginationState } = wwLib.wwVariable.useComponentVariable({
       uid: props.uid,
       name: "paginationState",
-      type: "Array",
+      type: "Object",
       defaultValue: {
         pageSize: 0,
         currentPage: 0,
@@ -57,12 +57,20 @@ export default {
         isLastPage: true,
       },
     });
+    const { value: sortState, setValue: setSortState } = wwLib.wwVariable.useComponentVariable({
+      uid: props.uid,
+      name: "sortState",
+      type: "Array",
+      defaultValue: [],
+    });
 
     return {
       selectedRows,
       setSelectedRows,
       paginationState,
       setPaginationState,
+      sortState,
+      setSortState,
     };
   },
   computed: {
@@ -194,6 +202,7 @@ export default {
         field: colId,
         sort,
       }));
+      this.setSortState(sortState);
       this.$emit("trigger-event", {
         name: "onSortChanged",
         event: {
