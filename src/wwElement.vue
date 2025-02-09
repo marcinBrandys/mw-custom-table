@@ -119,6 +119,7 @@ export default {
             field: this.parseLibraryPathIntoGrid(column.path),
             headerName: column.label,
             sortable: column.sortable,
+            cellDataType: column.dataType ?? true,
           }));
     },
     rowData() {

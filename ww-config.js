@@ -63,6 +63,7 @@ export default {
         item: {
           type: "Object",
           defaultValue: {
+            dataType: null,
             sortable: true,
             visible: true,
           },
@@ -82,6 +83,21 @@ export default {
                   en: "Label",
                 },
                 type: "Text",
+              },
+              dataType: {
+                label: { en: "Data Type" },
+                type: "TextSelect",
+                options: {
+                  options: [
+                    { value: null, label: "Automatic detection" },
+                    { value: "text", label: "Text" },
+                    { value: "number", label: "Number" },
+                    { value: "boolean", label: "True/False" },
+                    { value: "date", label: "Date" },
+                    { value: "dateString", label: "Date String" },
+                    { value: "object", label: "Object" },
+                  ],
+                },
               },
               sortable: {
                 label: {
