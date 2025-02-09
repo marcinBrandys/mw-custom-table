@@ -95,6 +95,7 @@ export default {
                     { value: "boolean", label: "True/False" },
                     { value: "date", label: "Date" },
                     { value: "dateString", label: "Date String" },
+                    { value: "timestamp", label: "Date Timestamp" },
                     { value: "object", label: "Object" },
                   ],
                 },

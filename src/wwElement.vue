@@ -6,6 +6,7 @@
           :key="theme.key"
           :rowData="rowData"
           :columnDefs="columnDefs"
+          :dataTypeDefinitions="dataTypeDefinitions"
           :grid-options="{
             theme: theme.value,
           }"
@@ -277,6 +278,28 @@ export default {
   data() {
     return {
       api: null,
+      dataTypeDefinitions: {
+        timestamp: {
+          baseDataType: "date",
+          extendsDataType: "date",
+          valueFormatter: ({ value }) => {
+            let dateObject = null;
+
+            if (typeof value === "number") {
+              dateObject = !Number.isNaN(value) ? new Date(value) : null;
+            } else if (typeof value === "string") {
+              const numericValue = Number.parseInt(value);
+              dateObject = !Number.isNaN(numericValue) ? new Date(numericValue) : null;
+            }
+
+            return [
+              dateObject?.getDate(),
+              dateObject?.getMonth() ? dateObject?.getMonth() + 1 : null,
+              dateObject?.getFullYear()
+            ].filter(s => s).join("/");
+          },
+        }
+      },
     };
   }
 };
