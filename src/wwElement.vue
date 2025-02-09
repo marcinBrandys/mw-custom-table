@@ -110,29 +110,16 @@ export default {
         }),
       };
     },
-    defaultColumnDefs() {
-      const dataTemplate = this.content.dataSource?.[0];
-
-      if (!dataTemplate) return [];
-
-      return Object.keys(dataTemplate).map((key) => ({
-        field: key,
-        sortable: true,
-      }));
-    },
-    customColumnDefs() {
-      if (!this.isArrayPropDefined(this.content.columnConfig)) {
-        return [];
-      }
-
-      return this.content.columnConfig.map((column) => ({
-        field: column.field,
-        headerName: column.headerName,
-        sortable: column.sortable,
-      }));
-    },
     columnDefs() {
-      return this.isArrayPropDefined(this.content.columnConfig) ? this.customColumnDefs : this.defaultColumnDefs;
+      if (!this.isArrayPropDefined(this.content.columnConfig)) return [];
+
+      return this.content.columnConfig
+          .filter(({ visible }) => visible)
+          .map((column) => ({
+            field: this.parseLibraryPathIntoGrid(column.path),
+            headerName: column.label,
+            sortable: column.sortable,
+          }));
     },
     rowData() {
       return this.content.dataSource ?? [];
@@ -277,6 +264,14 @@ export default {
         },
       });
     },
+    parseLibraryPathIntoGrid(path) {
+      if (!path) return '';
+
+      return path
+          .replace(/']\['/g, ".")
+          .replace("['", "")
+          .replace("']", "");
+    }
   },
   data() {
     return {

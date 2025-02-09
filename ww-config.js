@@ -1,5 +1,4 @@
 const isDataSourceDefined = (content) => {
-  console.log(content.dataSource);
   if (!content.dataSource) return false;
 
   return Array.isArray(content.dataSource) ? content.dataSource.length > 0 : false;
@@ -7,8 +6,6 @@ const isDataSourceDefined = (content) => {
 
 const generateDataSourceObjectPaths = (content) => {
   if (!isDataSourceDefined(content)) return {};
-
-  console.log(content.dataSource[0]);
 
   return content.dataSource[0];
 }
@@ -56,48 +53,7 @@ export default {
     /* Settings - columns */
     columnConfig: {
       label: {
-        en: "Columns config",
-      },
-      section: "settings",
-      type: "Array",
-      defaultValue: [],
-      bindable: true,
-      options: {
-        item: {
-          type: "Object",
-          label: "Column config",
-          options: {
-            item: {
-              field: {
-                label: {
-                  en: "Field name",
-                },
-                type: "Text",
-              },
-              headerName: {
-                label: {
-                  en: "Label",
-                },
-                type: "Text",
-              },
-              sortable: {
-                label: {
-                  en: "Sortable",
-                },
-                type: "OnOff",
-                defaultValue: true,
-              },
-            },
-          },
-        },
-        fixed: false,
-      },
-    },
-
-    /* Settings - columns V2 */
-    columnConfigV2: {
-      label: {
-        en: "Columns config V2",
+        en: "Columns",
       },
       section: "settings",
       type: "Array",
