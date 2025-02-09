@@ -1,3 +1,18 @@
+const isDataSourceDefined = (content) => {
+  console.log(content.dataSource);
+  if (!content.dataSource) return false;
+
+  return Array.isArray(content.dataSource) ? content.dataSource.length > 0 : false;
+};
+
+const generateDataSourceObjectPaths = (content) => {
+  if (!isDataSourceDefined(content)) return {};
+
+  console.log(content.dataSource[0]);
+
+  return content.dataSource[0];
+}
+
 export default {
   inherit: {
     type: 'ww-text',
@@ -76,6 +91,64 @@ export default {
           },
         },
         fixed: false,
+      },
+    },
+
+    /* Settings - columns V2 */
+    columnConfigV2: {
+      label: {
+        en: "Columns config V2",
+      },
+      section: "settings",
+      type: "Array",
+      defaultValue: [],
+      hidden: content => !isDataSourceDefined(content),
+      options: {
+        item: {
+          type: "Object",
+          defaultValue: {
+            sortable: true,
+            visible: true,
+          },
+          options: {
+            item: {
+              path: {
+                label: {
+                  en: "Path",
+                },
+                type: "ObjectPropertyPath",
+                options: (content) => ({
+                  object: generateDataSourceObjectPaths(content),
+                }),
+              },
+              label: {
+                label: {
+                  en: "Label",
+                },
+                type: "Text",
+              },
+              sortable: {
+                label: {
+                  en: "Sortable",
+                },
+                bindable: true,
+                type: "OnOff",
+              },
+              visible: {
+                label: {
+                  en: "Visible",
+                },
+                bindable: true,
+                type: "OnOff",
+              },
+            },
+          },
+        },
+        movable: true,
+        expandable: true,
+        getItemLabel(item, index) {
+          return item.label ? `Column: ${item.label}` : `Column: ${index + 1}`;
+        },
       },
     },
 
