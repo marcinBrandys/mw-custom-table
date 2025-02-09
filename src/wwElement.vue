@@ -295,7 +295,7 @@ export default {
             return [
               dateObject?.getDate(),
               dateObject?.getMonth() ? dateObject?.getMonth() + 1 : null,
-              dateObject?.getFullYear()
+              dateObject?.getFullYear(),
             ].filter(s => s).join("/");
           },
         }

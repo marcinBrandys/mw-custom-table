@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.7 (09.02.2025)
+
+### Custom Columns Definition
+- Added possibility to set path of column object (auto suggested reference to row object fields)
+- Added possibility of defining paths to object nested properties e.g. `row.propertyA.propertyB`
+- Added possibility to set manually column cell data type, or stay with automatic detection
+- Added `timestamp` data type formatter
+
 ## 0.0.6 (06.02.2025)
 
 ### Added component variables
