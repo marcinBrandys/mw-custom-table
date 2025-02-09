@@ -6,6 +6,7 @@
 - Added possibility to set path of column object (auto suggested reference to row object fields)
 - Added possibility of defining paths to object nested properties e.g. `row.propertyA.propertyB`
 - Added possibility to set manually column cell data type, or stay with automatic detection
+- Added possibility to set if column is `sortable` and `visible`
 - Added `timestamp` data type formatter
 
 ## 0.0.6 (06.02.2025)
