@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.8 (11.02.2025)
+
+### Table Custom Data Formatter
+- Added cell value formatter based on custom script code.
+
 ## 0.0.7 (09.02.2025)
 
 ### Custom Columns Definition

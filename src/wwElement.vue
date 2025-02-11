@@ -121,6 +121,7 @@ export default {
             headerName: column.label,
             sortable: column.sortable,
             cellDataType: column.dataType ?? true,
+            valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
           }));
     },
     rowData() {
@@ -273,7 +274,17 @@ export default {
           .replace(/']\['/g, ".")
           .replace("['", "")
           .replace("']", "");
-    }
+    },
+    buildValueGetter(valueGetterConfig) {
+      const code = valueGetterConfig?.code;
+      if (!code) return undefined;
+
+      try {
+        return new Function("row", `try { ${code} } catch { return ''; }`);
+      } catch {
+        return undefined;
+      }
+    },
   },
   data() {
     return {

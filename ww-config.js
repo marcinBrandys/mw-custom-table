@@ -85,7 +85,9 @@ export default {
                 type: "Text",
               },
               dataType: {
-                label: { en: "Data Type" },
+                label: {
+                  en: "Data Type",
+                },
                 type: "TextSelect",
                 options: {
                   options: [
@@ -97,7 +99,31 @@ export default {
                     { value: "dateString", label: "Date String" },
                     { value: "timestamp", label: "Date Timestamp" },
                     { value: "object", label: "Object" },
+                    { value: "custom", label: "Custom Value Getter" },
                   ],
+                },
+              },
+              valueGetterHint: {
+                type: "Info",
+                editorOnly: true,
+                options: {
+                  text: {
+                    en: "You can access data via row variable. Example: return row.data.fieldName;",
+                  },
+                },
+                section: "settings",
+                hidden: (content, sidepanelContent, boundProps, wwProps, array) => {
+                  return array.item.dataType !== "custom";
+                },
+              },
+              valueGetter: {
+                label: {
+                  en: "Custom Value Getter",
+                },
+                type: "Script",
+                bindable: true,
+                hidden: (content, sidepanelContent, boundProps, wwProps, array) => {
+                  return array.item.dataType !== "custom";
                 },
               },
               sortable: {
