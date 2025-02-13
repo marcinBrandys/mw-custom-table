@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.9 (13.02.2025)
+
+### Table Action Buttons
+- Introduced Action Buttons column - pinned to the right side of table.
+- Implemented Action Buttons configuration - possibility to dynamically add/remove/sort action buttons
+- Implemented possibility of changing an Icon of Action Button (edit, remove, custom - fixed set of icons for now, would be extended by dynamic approach based on configured buttons)
+- Implemented triggering a workflow on Action Button click
+
 ## 0.0.8 (11.02.2025)
 
 ### Table Custom Data Formatter

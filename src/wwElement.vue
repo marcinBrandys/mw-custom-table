@@ -34,10 +34,12 @@
 <script>
 import { AgGridVue } from "ag-grid-vue3";
 import { themeQuartz } from "ag-grid-community";
+import ActionButtonCellComponent from "./ActionButtonCellComponent.vue";
 
 export default {
   components: {
     AgGridVue,
+    ActionButtonCellComponent,
   },
   props: {
     content: { type: Object, required: true },
@@ -114,15 +116,16 @@ export default {
     columnDefs() {
       if (!this.isArrayPropDefined(this.content.columnConfig)) return [];
 
-      return this.content.columnConfig
-          .filter(({ visible }) => visible)
-          .map((column) => ({
-            field: this.parseLibraryPathIntoGrid(column.path),
-            headerName: column.label,
-            sortable: column.sortable,
-            cellDataType: column.dataType ?? true,
-            valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
-          }));
+      const dataColumns = this.content.columnConfig
+        .filter(({ visible }) => visible)
+        .map((column) => ({
+          field: this.parseLibraryPathIntoGrid(column.path),
+          headerName: column.label,
+          sortable: column.sortable,
+          cellDataType: column.dataType ?? true,
+          valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
+        }));
+      return [...dataColumns, ...this.actionButtons];
     },
     rowData() {
       return this.content.dataSource ?? [];
@@ -133,6 +136,25 @@ export default {
       return {
         mode: this.content.rowConfig.selectionMode,
       };
+    },
+    actionButtons() {
+      if (!this.content.rowConfig?.actionButtons) return [];
+
+      const buttons = this.content.rowConfig.actionButtons
+        .filter(({ actionType, visible }) => actionType !== null && visible)
+        .map((button) => ({
+          ...button,
+          wwElement: this.content[`ActionIconButtonElement${button.actionType}`],
+          onActionButtonClicked: this.onActionButtonClicked,
+        }));
+
+      return buttons.length > 0 ? [{
+        headerName: "",
+        field: "pinnedActionButtonsColumn",
+        pinned: "right",
+        cellRenderer: "ActionButtonCellComponent",
+        value: buttons,
+      }] : [];
     },
     pagination() {
       return {
@@ -264,6 +286,14 @@ export default {
           column: {
             fieldName: column.colDef.field,
           },
+        },
+      });
+    },
+    onActionButtonClicked(eventName, eventPayload) {
+      this.$emit("trigger-event", {
+        name: eventName,
+        event: {
+          ...eventPayload,
         },
       });
     },

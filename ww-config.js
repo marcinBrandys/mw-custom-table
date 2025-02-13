@@ -160,6 +160,7 @@ export default {
       type: "Object",
       defaultValue: {
         selectionMode: null,
+        actionButtons: [],
       },
       options: {
         item: {
@@ -191,6 +192,64 @@ export default {
                 }
               ],
             },
+          },
+          actionButtons: {
+            label: {
+              en: "Action Buttons",
+            },
+            type: "Array",
+            defaultValue: [],
+            options: {
+              item: {
+                type: "Object",
+                defaultValue: {
+                  customActionName: null,
+                  actionType: null,
+                  visible: true,
+                },
+                options: {
+                  item: {
+                    actionType: {
+                      label: {
+                        en: "Action Type",
+                      },
+                      type: "TextSelect",
+                      options: {
+                        options: [
+                          { value: "EditItem", label: "Edit item" },
+                          { value: "RemoveItem", label: "Remove item" },
+                          { value: "Custom", label: "Custom" },
+                        ],
+                      },
+                    },
+                    customActionName: {
+                      label: {
+                        en: "Action name",
+                      },
+                      type: "Text",
+                      hidden: (content, sidepanelContent, boundProps, wwProps, array) => {
+                        return array.item.actionType !== "Custom";
+                      },
+                    },
+                    visible: {
+                      label: {
+                        en: "Visible",
+                      },
+                      bindable: true,
+                      type: "OnOff",
+                    },
+                  },
+                },
+              },
+              movable: true,
+              expandable: true,
+              getItemLabel(item, index) {
+                if (item.actionType !== "Custom") {
+                  return `Action Button: ${item.actionType}`;
+                }
+                return item.customActionName ? `Action Button: ${item.customActionName}` : `Action Button: ${index + 1}`;
+              },
+            }
           },
         },
       },
@@ -470,7 +529,70 @@ export default {
         },
       },
     },
+
+    /* ELEMENTS */
+    ActionIconButtonElementEditItem: {
+      defaultValue: {
+        isWwObject: true,
+        type: "ww-icon",
+        state: {
+          name: "Edit Icon Button",
+          style: {
+            default: {
+              cursor: "pointer",
+            }
+          }
+        },
+        content: {
+          icon: "icon-pencil",
+        },
+      },
+      navigator: {
+        group: "Action Buttons",
+      },
+    },
+    ActionIconButtonElementRemoveItem: {
+      defaultValue: {
+        isWwObject: true,
+        type: "ww-icon",
+        state: {
+          name: "Remove Icon Button",
+          style: {
+            default: {
+              cursor: "pointer",
+            }
+          }
+        },
+        content: {
+          icon: "icon-trash",
+        },
+      },
+      navigator: {
+        group: "Action Buttons",
+      },
+    },
+    ActionIconButtonElementCustom: {
+      defaultValue: {
+        isWwObject: true,
+        type: "ww-icon",
+        state: {
+          name: "Custom Action Icon Button",
+          style: {
+            default: {
+              cursor: "pointer",
+            }
+          }
+        },
+        content: {
+          icon: "icon-cursor-click",
+        },
+      },
+      navigator: {
+        group: "Action Buttons",
+      },
+    },
   },
+
   triggerEvents: [
     {
       name: "onTableReady",
@@ -551,6 +673,40 @@ export default {
         row: {
           data: {},
           index: 0,
+        },
+      },
+    },
+    {
+      name: "onRowEdit",
+      label: {
+        en: "onRowEdit",
+      },
+      event: {
+        row: {
+          data: {},
+        },
+      },
+    },
+    {
+      name: "onRowRemove",
+      label: {
+        en: "onRowRemove",
+      },
+      event: {
+        row: {
+          data: {},
+        },
+      },
+    },
+    {
+      name: "onRowCustomActionButtonClicked",
+      label: {
+        en: "onRowCustomActionButtonClicked",
+      },
+      event: {
+        actionType: "ActionType",
+        row: {
+          data: {},
         },
       },
     },
