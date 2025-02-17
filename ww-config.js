@@ -544,7 +544,7 @@ export default {
           }
         },
         content: {
-          icon: "icon-pencil",
+          icon: "uui-pencil-01",
         },
       },
       navigator: {
@@ -564,7 +564,7 @@ export default {
           }
         },
         content: {
-          icon: "icon-trash",
+          icon: "uui-trash-01",
         },
       },
       navigator: {
@@ -584,7 +584,7 @@ export default {
           }
         },
         content: {
-          icon: "icon-cursor-click",
+          icon: "uui-cursor-click-02",
         },
       },
       navigator: {
