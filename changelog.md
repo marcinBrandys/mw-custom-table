@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.11 (17.02.2025)
+
+### Table Action Buttons
+- Implemented fixed height of table (option + field to provide size)
+- Implemented auto height of table (based on calculation of displayed rows height)
+
 ## 0.0.10 (17.02.2025)
 
 ### Table Action Buttons

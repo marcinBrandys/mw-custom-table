@@ -283,7 +283,7 @@ export default {
       type: "Object",
       defaultValue: {
         enabled: true,
-        pageSize: 50,
+        pageSize: 25,
         pageSizeOptions: [10, 25, 50, 100],
       },
       options: {
@@ -331,6 +331,66 @@ export default {
               },
             },
           },
+        },
+      },
+    },
+
+    /* Styles - sizing */
+    dimensionSectionInfo: {
+      label: {
+        en: "Dimension",
+      },
+      type: "Info",
+      options: {
+        text: {
+          en: "Dimension",
+        },
+      },
+    },
+    dimension: {
+      type: "Object",
+      defaultValue: {
+        layout: "normal",
+        height: "400px",
+      },
+      options: {
+        item: {
+          layout: {
+            label: {
+              en: "Layout mode",
+            },
+            type: "TextSelect",
+            options: {
+              options: [
+                { value: "normal", label: "Fixed height" },
+                { value: "autoHeight", label: "Auto height" },
+              ],
+            },
+          },
+          height: {
+            label: {
+              en: "Table height",
+            },
+            type: "Length",
+            hidden: (content) => {
+              return content.dimension.layout === "autoHeight";
+            },
+            bindable: true,
+            options: {
+              unitChoices: [
+                {
+                  value: "px",
+                  label: "px",
+                },
+                {
+                  value: "%",
+                  label: "%",
+                  min: 0,
+                  max: 100
+                },
+              ],
+            },
+          }
         },
       },
     },

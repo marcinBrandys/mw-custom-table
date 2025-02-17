@@ -1,13 +1,16 @@
 <template>
   <div class="mywork-custom-table">
-    <div v-if="theme" class="mywork-custom-table--container">
+    <div v-if="theme && domLayout" class="mywork-custom-table--container">
       <ag-grid-vue
+          :key="`${theme.key}-${domLayout}`"
           class="mywork-custom-table--grid-table"
-          :key="theme.key"
+          :class="{'mywork-custom-table--grid-table--filled': displayedRowsCount > 0}"
+          :style="styleObject"
           :rowData="rowData"
           :columnDefs="columnDefs"
           :dataTypeDefinitions="dataTypeDefinitions"
           :grid-options="{
+            domLayout,
             theme: theme.value,
           }"
           :pagination="pagination.enabled"
@@ -115,6 +118,15 @@ export default {
         }),
       };
     },
+    domLayout() {
+      return this.content?.dimension?.layout ?? "normal";
+    },
+    styleObject() {
+      const height = this.content?.dimension?.height ?? "400px";
+      return {
+        height: this.domLayout === "normal" ? height : "auto",
+      };
+    },
     columnDefs() {
       if (!this.isArrayPropDefined(this.content.columnConfig)) return [];
 
@@ -218,7 +230,8 @@ export default {
         name: "onFirstDataRendered",
       });
     },
-    onModelUpdated() {
+    onModelUpdated({ api }) {
+      this.displayedRowsCount = api.getDisplayedRowCount();
       this.$emit("trigger-event", {
         name: "onModelUpdated",
       });
@@ -354,6 +367,7 @@ export default {
   data() {
     return {
       api: null,
+      displayedRowsCount: 0,
       dataTypeDefinitions: {
         timestamp: {
           baseDataType: "date",
@@ -381,15 +395,18 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .mywork-custom-table {
   &--container {
-    height: 500px; // dev purposes only
-    width: 1000px; // dev purposes only
-  }
-  &--grid-table {
     height: 100%;
     width: 100%;
+  }
+  .mywork-custom-table--grid-table--filled {
+    .ag-layout-auto-height {
+      .ag-center-cols-viewport {
+        min-height: unset !important;
+      }
+    }
   }
 }
 </style>
