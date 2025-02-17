@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.10 (17.02.2025)
+
+### Table Action Buttons
+- Support of many action buttons instead only three fixed ones.
+- Implemented dynamic add/remove/sort action buttons. Icon elements are re-adjusted on add or remove action button.
+
 ## 0.0.9 (13.02.2025)
 
 ### Table Action Buttons

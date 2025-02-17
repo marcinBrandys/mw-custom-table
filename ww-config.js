@@ -160,7 +160,20 @@ export default {
       type: "Object",
       defaultValue: {
         selectionMode: null,
-        actionButtons: [],
+        actionButtons: [
+          {
+            wwElementId: "ActionIconButtonElementEditItem",
+            actionType: "EditItem",
+            customActionName: null,
+            visible: false,
+          },
+          {
+            wwElementId: "ActionIconButtonElementRemoveItem",
+            actionType: "RemoveItem",
+            customActionName: null,
+            visible: false,
+          },
+        ],
       },
       options: {
         item: {
@@ -198,17 +211,21 @@ export default {
               en: "Action Buttons",
             },
             type: "Array",
-            defaultValue: [],
             options: {
               item: {
                 type: "Object",
                 defaultValue: {
+                  wwElementId: null,
                   customActionName: null,
                   actionType: null,
                   visible: true,
                 },
                 options: {
                   item: {
+                    wwElementId: {
+                      type: "String",
+                      hidden: true,
+                    },
                     actionType: {
                       label: {
                         en: "Action Type",
@@ -216,9 +233,9 @@ export default {
                       type: "TextSelect",
                       options: {
                         options: [
+                          { value: "Custom", label: "Custom" },
                           { value: "EditItem", label: "Edit item" },
                           { value: "RemoveItem", label: "Remove item" },
-                          { value: "Custom", label: "Custom" },
                         ],
                       },
                     },
@@ -243,6 +260,8 @@ export default {
               },
               movable: true,
               expandable: true,
+              add: "addActionButton",
+              remove: "removeActionButton",
               getItemLabel(item, index) {
                 if (item.actionType !== "Custom") {
                   return `Action Button: ${item.actionType}`;
@@ -531,64 +550,41 @@ export default {
     },
 
     /* ELEMENTS */
-    ActionIconButtonElementEditItem: {
+    actionButtonElements: {
       defaultValue: {
-        isWwObject: true,
-        type: "ww-icon",
-        state: {
-          name: "Edit Icon Button",
-          style: {
-            default: {
-              cursor: "pointer",
+        ActionIconButtonElementEditItem: {
+          isWwObject: true,
+          type: "ww-icon",
+          state: {
+            name: "Edit Icon Button",
+            style: {
+              default: {
+                cursor: "pointer",
+              }
             }
-          }
+          },
+          content: {
+            icon: "uui-pencil-01",
+          },
         },
-        content: {
-          icon: "uui-pencil-01",
+        ActionIconButtonElementRemoveItem: {
+          isWwObject: true,
+          type: "ww-icon",
+          state: {
+            name: "Remove Icon Button",
+            style: {
+              default: {
+                cursor: "pointer",
+              }
+            }
+          },
+          content: {
+            icon: "uui-trash-01",
+          },
         },
       },
       navigator: {
-        group: "Action Buttons",
-      },
-    },
-    ActionIconButtonElementRemoveItem: {
-      defaultValue: {
-        isWwObject: true,
-        type: "ww-icon",
-        state: {
-          name: "Remove Icon Button",
-          style: {
-            default: {
-              cursor: "pointer",
-            }
-          }
-        },
-        content: {
-          icon: "uui-trash-01",
-        },
-      },
-      navigator: {
-        group: "Action Buttons",
-      },
-    },
-    ActionIconButtonElementCustom: {
-      defaultValue: {
-        isWwObject: true,
-        type: "ww-icon",
-        state: {
-          name: "Custom Action Icon Button",
-          style: {
-            default: {
-              cursor: "pointer",
-            }
-          }
-        },
-        content: {
-          icon: "uui-cursor-click-02",
-        },
-      },
-      navigator: {
-        group: "Action Buttons",
+        group: "Action Button Elements",
       },
     },
   },

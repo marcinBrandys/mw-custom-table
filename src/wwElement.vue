@@ -45,7 +45,7 @@ export default {
     content: { type: Object, required: true },
     uid: { type: String, required: true },
   },
-  emits: ["trigger-event"],
+  emits: ["trigger-event", "update:content"],
   setup(props) {
     const { value: selectedRows, setValue: setSelectedRows } = wwLib.wwVariable.useComponentVariable({
       uid: props.uid,
@@ -71,8 +71,10 @@ export default {
       type: "Array",
       defaultValue: [],
     });
+    const { createElement } = wwLib.useCreateElement();
 
     return {
+      createElement,
       selectedRows,
       setSelectedRows,
       paginationState,
@@ -142,9 +144,9 @@ export default {
 
       const buttons = this.content.rowConfig.actionButtons
         .filter(({ actionType, visible }) => actionType !== null && visible)
-        .map((button) => ({
+        .map(({ wwElementId, ...button}) => ({
           ...button,
-          wwElement: this.content[`ActionIconButtonElement${button.actionType}`],
+          wwElement: this.content.actionButtonElements[wwElementId],
           onActionButtonClicked: this.onActionButtonClicked,
         }));
 
@@ -167,6 +169,39 @@ export default {
     },
   },
   methods: {
+    /* wwEditor:start */
+    async addActionButton() {
+      const rowConfig = {...this.content.rowConfig};
+      const id = wwLib.wwUtils.getUid();
+      rowConfig.actionButtons.push({
+        actionType: null,
+        customActionName: null,
+        visible: true,
+        wwElementId: id,
+      });
+      const actionButtonElements = { ...this.content.actionButtonElements };
+      actionButtonElements[id] = await this.createElement(
+          "ww-icon",
+          {
+            _state: { name: `Action Button Element ${rowConfig.actionButtons.length}` },
+            content: {
+              icon: "uui-cursor-click-02",
+            },
+          },
+      );
+      this.$emit("update:content", { rowConfig, actionButtonElements });
+    },
+    removeActionButton({ index }) {
+      const actionButtonToRemove = this.content.rowConfig.actionButtons[index];
+      const rowConfig = {
+        ...this.content.rowConfig,
+        actionButtons: this.content.rowConfig.actionButtons.filter(item => item.wwElementId !== actionButtonToRemove?.wwElementId),
+      };
+      const actionButtonElements = { ...this.content.actionButtonElements };
+      delete actionButtonElements[actionButtonToRemove?.wwElementId];
+      this.$emit("update:content", { rowConfig, actionButtonElements });
+    },
+    /* wwEditor:end */
     isArrayPropDefined(array) {
       return Array.isArray(array)
         && array.length > 0
