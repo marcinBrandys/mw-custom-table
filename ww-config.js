@@ -63,12 +63,17 @@ export default {
         item: {
           type: "Object",
           defaultValue: {
+            id: null,
             dataType: null,
             sortable: true,
             visible: true,
           },
           options: {
             item: {
+              id: {
+                hidden: true,
+                type: "Text",
+              },
               path: {
                 label: {
                   en: "Path",
@@ -100,6 +105,9 @@ export default {
                     { value: "timestamp", label: "Date Timestamp" },
                     { value: "object", label: "Object" },
                     { value: "custom", label: "Custom Value Getter" },
+                    { value: "text-element", label: "Text Element" },
+                    { value: "image-element", label: "Image Element" },
+                    { value: "button-element", label: "Button Element" },
                   ],
                 },
               },
@@ -143,6 +151,8 @@ export default {
             },
           },
         },
+        add: "addColumn",
+        remove: "removeColumn",
         movable: true,
         expandable: true,
         getItemLabel(item, index) {
@@ -645,6 +655,12 @@ export default {
       },
       navigator: {
         group: "Action Button Elements",
+      },
+    },
+    cellElements: {
+      defaultValue: {},
+      navigator: {
+        group: "Cell Elements",
       },
     },
   },

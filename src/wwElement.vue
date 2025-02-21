@@ -38,17 +38,25 @@
 import { AgGridVue } from "ag-grid-vue3";
 import { themeQuartz } from "ag-grid-community";
 import ActionButtonCellComponent from "./ActionButtonCellComponent.vue";
+import CellComponent from "./CellComponent.vue";
+
+const DATATYPE_TO_WW_ELEMENT_MAP = {
+  "button-element": "ww-button",
+  "text-element": "ww-text",
+  "image-element": "ww-image",
+};
 
 export default {
   components: {
     AgGridVue,
     ActionButtonCellComponent,
+    CellComponent,
   },
   props: {
     content: { type: Object, required: true },
     uid: { type: String, required: true },
   },
-  emits: ["trigger-event", "update:content"],
+  emits: ["trigger-event", "update:content", "update:content:effect"],
   setup(props) {
     const { value: selectedRows, setValue: setSelectedRows } = wwLib.wwVariable.useComponentVariable({
       uid: props.uid,
@@ -74,7 +82,7 @@ export default {
       type: "Array",
       defaultValue: [],
     });
-    const { createElement } = wwLib.useCreateElement();
+    const { createElement } = wwLib.wwElement.useCreate();
 
     return {
       createElement,
@@ -132,13 +140,27 @@ export default {
 
       const dataColumns = this.content.columnConfig
         .filter(({ visible }) => visible)
-        .map((column) => ({
-          field: this.parseLibraryPathIntoGrid(column.path),
-          headerName: column.label,
-          sortable: column.sortable,
-          cellDataType: column.dataType ?? true,
-          valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
-        }));
+        .map((column) => {
+          const dataPath = this.parseLibraryPathIntoGrid(column.path);
+          const customCellConfig = this.content.cellElements[column.id] ? {
+            autoHeight: true,
+            cellRenderer: "CellComponent",
+            cellRendererParams: {
+              dataType: column.dataType,
+              wwElement: this.content.cellElements[column.id],
+              dataPath,
+            },
+          } : null;
+          return {
+            field: dataPath,
+            headerName: column.label,
+            sortable: column.sortable,
+            wrapText: true,
+            cellDataType: column.dataType ?? true,
+            valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
+            ...customCellConfig,
+          };
+        });
       return [...dataColumns, ...this.actionButtons];
     },
     rowData() {
@@ -167,7 +189,9 @@ export default {
         field: "pinnedActionButtonsColumn",
         pinned: "right",
         cellRenderer: "ActionButtonCellComponent",
-        value: buttons,
+        cellRendererParams: {
+          buttons
+        },
       }] : [];
     },
     pagination() {
@@ -182,6 +206,23 @@ export default {
   },
   methods: {
     /* wwEditor:start */
+    async addColumn() {
+      const id = wwLib.wwUtils.getUid();
+      const columnConfig = [...this.content.columnConfig, {
+        id,
+        dataType: null,
+        sortable: true,
+        visible: true,
+      }];
+      this.$emit("update:content", { columnConfig });
+    },
+    removeColumn({ index }) {
+      const cellElementToRemove = this.content.columnConfig[index];
+      const columnConfig = this.content.columnConfig.filter((column) => column.id !== cellElementToRemove.id);
+      const cellElements = { ...this.content.cellElements };
+      delete cellElements[cellElementToRemove.id];
+      this.$emit("update:content", { columnConfig, cellElements });
+    },
     async addActionButton() {
       const rowConfig = {...this.content.rowConfig};
       const id = wwLib.wwUtils.getUid();
@@ -391,7 +432,42 @@ export default {
         }
       },
     };
-  }
+  },
+  watch: {
+    /* wwEditor:start */
+    "content.columnConfig": {
+      deep: true,
+      handler(columns) {
+        if (!Array.isArray(columns)) return;
+
+        const existingCellElementIds = Object.keys(this.content?.cellElements ?? []);
+        const cellElementsToAdd = columns
+          .map(({ id: columnId, dataType: columnDataType }) => ({
+            columnId,
+            columnDataType,
+            wwElementType: DATATYPE_TO_WW_ELEMENT_MAP[columnDataType],
+          }))
+          .filter(({ columnId, wwElementType }) => wwElementType && !existingCellElementIds.includes(columnId));
+
+        cellElementsToAdd.forEach(async ({ columnId: id, columnDataType, wwElementType }) => {
+          const cellElement = await this.createElement(
+            wwElementType,
+            {
+              _state: { name: `Cell Element - ${columnDataType}` },
+            },
+          );
+          console.log("update:content:effect");
+          this.$emit("update:content:effect", {
+            cellElements: {
+              ...this.content.cellElements,
+              [id]: cellElement,
+            },
+          });
+        });
+      },
+    },
+    /* wwEditor:end */
+  },
 };
 </script>
 

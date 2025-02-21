@@ -1,9 +1,8 @@
 <script>
 export default {
   setup(props) {
-    const { value: buttons } = props.params.colDef;
     const { id: rowId } = props.params.node;
-    const { data } = props.params;
+    const { data, buttons } = props.params;
     return {
       buttons,
       rowId,
