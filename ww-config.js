@@ -173,12 +173,16 @@ export default {
         actionButtons: [
           {
             wwElementId: "ActionIconButtonElementEditItem",
+            buttonType: "ww-icon",
+            buttonLabel: "Edit",
             actionType: "EditItem",
             customActionName: null,
             visible: false,
           },
           {
             wwElementId: "ActionIconButtonElementRemoveItem",
+            buttonType: "ww-icon",
+            buttonLabel: "Remove",
             actionType: "RemoveItem",
             customActionName: null,
             visible: false,
@@ -226,6 +230,8 @@ export default {
                 type: "Object",
                 defaultValue: {
                   wwElementId: null,
+                  buttonType: "ww-icon",
+                  buttonLabel: "Custom Action",
                   customActionName: null,
                   actionType: null,
                   visible: true,
@@ -247,6 +253,27 @@ export default {
                           { value: "EditItem", label: "Edit item" },
                           { value: "RemoveItem", label: "Remove item" },
                         ],
+                      },
+                    },
+                    buttonType: {
+                      label: {
+                        en: "Button Type",
+                      },
+                      type: "TextSelect",
+                      options: {
+                        options: [
+                          { value: "ww-icon", label: "Icon" },
+                          { value: "ww-button", label: "Button" },
+                        ],
+                      },
+                    },
+                    buttonLabel: {
+                      label: {
+                        en: "Button Label",
+                      },
+                      type: "Text",
+                      hidden: (content, sidepanelContent, boundProps, wwProps, array) => {
+                        return array.item.buttonType !== "ww-button";
                       },
                     },
                     customActionName: {
@@ -424,7 +451,8 @@ export default {
         foreground: "#D5D7DA",
         background: "#FFFFFF",
         backgroundActive: "#FAFAFA",
-        text: "#181D27"
+        text: "#181D27",
+        destructive: "#C53434",
       },
       options: {
         item: {
@@ -459,6 +487,13 @@ export default {
           text: {
             label: {
               en: "Default text color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+          destructive: {
+            label: {
+              en: "Destructive color",
             },
             type: "Color",
             bindable: true,
@@ -625,13 +660,13 @@ export default {
         ActionIconButtonElementEditItem: {
           isWwObject: true,
           type: "ww-icon",
-          state: {
+          _state: {
             name: "Edit Icon Button",
             style: {
               default: {
                 cursor: "pointer",
-              }
-            }
+              },
+            },
           },
           content: {
             icon: "uui-pencil-01",
@@ -640,13 +675,13 @@ export default {
         ActionIconButtonElementRemoveItem: {
           isWwObject: true,
           type: "ww-icon",
-          state: {
+          _state: {
             name: "Remove Icon Button",
             style: {
               default: {
                 cursor: "pointer",
-              }
-            }
+              },
+            },
           },
           content: {
             icon: "uui-trash-01",

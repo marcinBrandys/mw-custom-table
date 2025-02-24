@@ -47,7 +47,10 @@ export default {
       <wwElement
           @click="onClick(button)"
           v-bind="button.wwElement"
-          :ww-props="{ isFixed: true }"
+          :ww-props="{
+            isFixed: true,
+            text: button.buttonLabel,
+          }"
       ></wwElement>
     </div>
   </div>
@@ -67,7 +70,6 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100%;
-  max-width: 24px;
+  margin: 0 6px;
 }
 </style>

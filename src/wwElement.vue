@@ -12,6 +12,7 @@
           :grid-options="{
             domLayout,
             theme: theme.value,
+            suppressCellFocus: true,
           }"
           :pagination="pagination.enabled"
           :paginationPageSize="pagination.pageSize"
@@ -236,9 +237,16 @@ export default {
       actionButtonElements[id] = await this.createElement(
           "ww-icon",
           {
-            _state: { name: `Action Button Element ${rowConfig.actionButtons.length}` },
+            _state: {
+              name: `Action Button Element ${rowConfig.actionButtons.length}`,
+              style: {
+                default: {
+                  cursor: "pointer",
+                },
+              },
+            },
             content: {
-              icon: "uui-cursor-click-02",
+              icon: this.getActionButtonInitialConfig(null).icon,
             },
           },
       );
@@ -404,6 +412,66 @@ export default {
         return undefined;
       }
     },
+    getActionButtonInitialConfig(actionType) {
+      switch (actionType) {
+        case "Custom":
+          return {
+            textColor: this.content?.color?.text,
+            icon: "uui-cursor-click-02",
+          };
+        case "EditItem":
+          return {
+            textColor: this.content?.color?.text,
+            icon: "uui-pencil-01",
+          };
+        case "RemoveItem":
+          return {
+            textColor: this.content?.color?.destructive,
+            icon: "uui-trash-01",
+          };
+        default:
+          return {
+            textColor: this.content?.color?.text,
+            icon: "uui-cursor-click-02",
+          };
+      }
+    },
+    buildActionButtonInitialProps(buttonType, actionType) {
+      const { textColor, icon } = this.getActionButtonInitialConfig(actionType);
+      return buttonType === "ww-button" ? {
+        _state: {
+          name: "Action Button Element",
+          style: {
+            default: {
+              backgroundColor: "transparent",
+              height: "20px",
+              padding: "0px",
+              cursor: "pointer",
+            },
+          },
+        },
+        content: {
+          buttonType: "button",
+          "_ww-text_color": textColor,
+          "_ww-text_fontSize": "14px",
+          "_ww-text_fontWeight": 700,
+          "_ww-text_lineHeight": "20px",
+          "_ww-text_text": "Text",
+        },
+      } : {
+        _state: {
+          name: "Action Button Element",
+          style: {
+            default: {
+              cursor: "pointer",
+            },
+          },
+        },
+        content: {
+          icon,
+        },
+      };
+    },
   },
   data() {
     return {
@@ -456,7 +524,6 @@ export default {
               _state: { name: `Cell Element - ${columnDataType}` },
             },
           );
-          console.log("update:content:effect");
           this.$emit("update:content:effect", {
             cellElements: {
               ...this.content.cellElements,
@@ -466,6 +533,34 @@ export default {
         });
       },
     },
+    "content.rowConfig.actionButtons": {
+      deep: true,
+      handler(buttons) {
+        if (!Array.isArray(buttons)) return;
+
+        const existingActionButtonElementIds = Object.keys(this.content?.actionButtonElements ?? []);
+        const actionButtonElementsToAdd = buttons.filter(({ wwElementId, buttonType }) => {
+          if (!buttonType) return false;
+          if (!existingActionButtonElementIds.includes(wwElementId)) return true;
+          const existingElement = this.content.actionButtonElements[wwElementId];
+          const wwObject = wwLib.wwObjectHelper.getWwObject(existingElement?.uid);
+          return wwObject?.type !== wwLib.wwObjectHelper.typeAliases[buttonType];
+        });
+        actionButtonElementsToAdd.forEach(async ({ wwElementId: id, buttonType, actionType }) => {
+          const props = this.buildActionButtonInitialProps(buttonType, actionType);
+          const actionButtonElement = await this.createElement(
+              buttonType,
+              props,
+          );
+          this.$emit("update:content:effect", {
+            actionButtonElements: {
+              ...this.content.actionButtonElements,
+              [id]: actionButtonElement,
+            },
+          });
+        });
+      },
+    }
     /* wwEditor:end */
   },
 };

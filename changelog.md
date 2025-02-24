@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.12 (24.02.2025)
+
+### Table Action Buttons
+- Implemented switching between Icon and Button in Action Buttons column. Now regular text buttons are also supported with initial styling based on Figma.
+- Implemented injecting wwElements as table cells. Image and Text are supported for now.
+
 ## 0.0.11 (17.02.2025)
 
 ### Table Action Buttons
