@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.13 (25.02.2025)
+
+### Table Filters
+- Implemented core filtering functionality and dynamic config.
+- Supported filter data type auto detection.
+
 ## 0.0.12 (24.02.2025)
 
 ### Table Action Buttons

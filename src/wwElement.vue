@@ -47,6 +47,14 @@ const DATATYPE_TO_WW_ELEMENT_MAP = {
   "image-element": "ww-image",
 };
 
+const FILTER_DATATYPE_TO_COMPARATOR_MAP = {
+  text: "agTextColumnFilter",
+  number: "agNumberColumnFilter",
+  date: "agDateColumnFilter",
+};
+
+const FILTERABLE_DATA_TYPES = ["text", "number", "boolean", "date", "dateString", "timestamp", "object", "custom"];
+
 export default {
   components: {
     AgGridVue,
@@ -115,6 +123,7 @@ export default {
           headerVerticalPaddingScale: 0.5,
           dataFontSize: this.content.font.fontSize,
           headerTextColor: this.content.header.textColor ?? this.content.color.text,
+          menuTextColor: this.content.header.textColor ?? this.content.color.text,
           oddRowBackgroundColor: this.content.color.backgroundActive,
           textColor: this.content.color.text,
           rowBorder: true,
@@ -152,6 +161,7 @@ export default {
               dataPath,
             },
           } : null;
+          const filterColumnConfig = this.buildFilterColumnConfig(column, dataPath);
           return {
             field: dataPath,
             headerName: column.label,
@@ -159,6 +169,7 @@ export default {
             wrapText: true,
             cellDataType: column.dataType ?? true,
             valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
+            ...filterColumnConfig,
             ...customCellConfig,
           };
         });
@@ -471,6 +482,62 @@ export default {
           icon,
         },
       };
+    },
+    detectColumnDataType(dataPath) {
+      const sampleData = this.rowData[0]?.[dataPath] ?? null;
+      if (!sampleData) return "text";
+
+      switch (typeof sampleData) {
+        case "string":
+          return "text";
+        case "bigint":
+        case "number":
+          return "number";
+        case "boolean":
+          return "boolean";
+        case "object":
+          if (sampleData instanceof Date) return "date";
+          return "object";
+        default:
+          return "text";
+      }
+    },
+    buildFilterColumnConfig(columnConfig, dataPath) {
+      const { dataType, filterable } = columnConfig;
+      const isDataTypeFilterable = dataType === null || FILTERABLE_DATA_TYPES.includes(dataType);
+      if (!filterable || !isDataTypeFilterable) return null;
+
+      const defaultFilterConfig = {
+        filterParams: {
+          buttons: ["apply", "clear", "reset", "cancel"],
+          closeOnApply: true,
+        },
+      };
+      const type = dataType === null ? this.detectColumnDataType(dataPath) : dataType;
+      switch (type) {
+        case "text":
+          return {
+            ...defaultFilterConfig,
+            filter: FILTER_DATATYPE_TO_COMPARATOR_MAP["text"],
+          };
+        case "number":
+          return {
+            ...defaultFilterConfig,
+            filter: FILTER_DATATYPE_TO_COMPARATOR_MAP["number"],
+          };
+        case "date":
+        case "dateString":
+        case "timestamp":
+          return {
+            ...defaultFilterConfig,
+            filter: FILTER_DATATYPE_TO_COMPARATOR_MAP["date"],
+          };
+        default:
+          return {
+            ...defaultFilterConfig,
+            filter: FILTER_DATATYPE_TO_COMPARATOR_MAP["text"],
+          };
+      }
     },
   },
   data() {

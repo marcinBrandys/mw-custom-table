@@ -66,6 +66,7 @@ export default {
             id: null,
             dataType: null,
             sortable: true,
+            filterable: false,
             visible: true,
           },
           options: {
@@ -100,7 +101,7 @@ export default {
                     { value: "text", label: "Text" },
                     { value: "number", label: "Number" },
                     { value: "boolean", label: "True/False" },
-                    { value: "date", label: "Date" },
+                    { value: "date", label: "Date Object" },
                     { value: "dateString", label: "Date String" },
                     { value: "timestamp", label: "Date Timestamp" },
                     { value: "object", label: "Object" },
@@ -140,6 +141,18 @@ export default {
                 },
                 bindable: true,
                 type: "OnOff",
+              },
+              filterable: {
+                label: {
+                  en: "Filterable",
+                },
+                bindable: true,
+                defaultValue: false,
+                type: "OnOff",
+                hidden: (content, sidepanelContent, boundProps, wwProps, array) => {
+                  const filterableDataTypes = ["text", "number", "boolean", "date", "dateString", "timestamp", "object", "custom"];
+                  return array.item.dataType !== null && !filterableDataTypes.includes(array.item.dataType);
+                },
               },
               visible: {
                 label: {
