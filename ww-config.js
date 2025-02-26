@@ -773,6 +773,15 @@ export default {
       },
     },
     {
+      name: "onFilterChanged",
+      label: {
+        en: "onFilterChanged: Triggered every time the filter state changes. Pass current filter state",
+      },
+      event: {
+        filterState: {},
+      },
+    },
+    {
       name: "onRowClicked",
       label: {
         en: "onRowClicked",

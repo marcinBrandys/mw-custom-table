@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.14 (26.02.2025)
+
+### Table Filters
+- Exposed filterState variable
+- Handle onFilterChanged event
+
 ## 0.0.13 (25.02.2025)
 
 ### Table Filters

@@ -24,6 +24,7 @@
           @selection-changed="onSelectionChanged"
           @pagination-changed="onPaginationChanged"
           @sort-changed="onSortChanged"
+          @filter-changed="onFilterChanged"
           @row-clicked="onRowClicked"
           @row-double-clicked="onRowDoubleClicked"
           @cell-clicked="onCellClicked"
@@ -91,6 +92,12 @@ export default {
       type: "Array",
       defaultValue: [],
     });
+    const { value: filterState, setValue: setFilterState } = wwLib.wwVariable.useComponentVariable({
+      uid: props.uid,
+      name: "filterState",
+      type: "Object",
+      defaultValue: {},
+    });
     const { createElement } = wwLib.wwElement.useCreate();
 
     return {
@@ -101,6 +108,8 @@ export default {
       setPaginationState,
       sortState,
       setSortState,
+      filterState,
+      setFilterState,
     };
   },
   computed: {
@@ -332,6 +341,16 @@ export default {
         name: "onSortChanged",
         event: {
           sortState,
+        },
+      });
+    },
+    onFilterChanged({ api }) {
+      const filterState = api.getFilterModel();
+      this.setFilterState(filterState);
+      this.$emit("trigger-event", {
+        name: "onFilterChanged",
+        event: {
+          filterState,
         },
       });
     },
