@@ -41,6 +41,7 @@ import { AgGridVue } from "ag-grid-vue3";
 import { themeQuartz } from "ag-grid-community";
 import ActionButtonCellComponent from "./ActionButtonCellComponent.vue";
 import CellComponent from "./CellComponent.vue";
+import CellLayoutComponent from "./CellLayoutComponent.vue";
 
 const DATATYPE_TO_WW_ELEMENT_MAP = {
   "button-element": "ww-button",
@@ -61,6 +62,7 @@ export default {
     AgGridVue,
     ActionButtonCellComponent,
     CellComponent,
+    CellLayoutComponent,
   },
   props: {
     content: { type: Object, required: true },
@@ -161,7 +163,18 @@ export default {
         .filter(({ visible }) => visible)
         .map((column) => {
           const dataPath = this.parseLibraryPathIntoGrid(column.path);
-          const customCellConfig = this.content.cellElements[column.id] ? {
+          const customLayoutConfig = this.content.cellLayouts[`layout-${column.id}`] ? {
+            autoHeight: true,
+            cellRenderer: "CellLayoutComponent",
+            cellRendererParams: {
+              layoutPath: `cellLayouts.layout-${column.id}`,
+              dataPath,
+              componentContent: {
+                cellLayouts: this.content.cellLayouts,
+              }
+            },
+          } : null;
+          const customCellConfig = this.content.cellElements[column.id] && !customLayoutConfig ? {
             autoHeight: true,
             cellRenderer: "CellComponent",
             cellRendererParams: {
@@ -180,6 +193,7 @@ export default {
             valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
             ...filterColumnConfig,
             ...customCellConfig,
+            ...customLayoutConfig,
           };
         });
       return [...dataColumns, ...this.actionButtons];
@@ -617,6 +631,24 @@ export default {
             },
           });
         });
+
+        const existingCellLayoutIds = Object.keys(this.content?.cellLayouts ?? []);
+        const cellLayoutsToAdd = columns
+          .filter(({ id: columnId, dataType }) => dataType === "custom-layout" && !existingCellLayoutIds.includes(`layout-${columnId}`))
+          .reduce((acc, { id: columnId }) => {
+            return {
+              ...acc,
+              [`layout-${columnId}`]: [],
+            }
+          }, {});
+        if (Object.keys(cellLayoutsToAdd).length > 0) {
+          this.$emit("update:content", {
+            cellLayouts: {
+              ...this.content?.cellLayouts,
+              ...cellLayoutsToAdd,
+            },
+          });
+        }
       },
     },
     "content.rowConfig.actionButtons": {

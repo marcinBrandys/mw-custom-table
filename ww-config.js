@@ -109,6 +109,7 @@ export default {
                     { value: "text-element", label: "Text Element" },
                     { value: "image-element", label: "Image Element" },
                     { value: "button-element", label: "Button Element" },
+                    { value: "custom-layout", label: "Custom Layout" },
                   ],
                 },
               },
@@ -709,6 +710,12 @@ export default {
       defaultValue: {},
       navigator: {
         group: "Cell Elements",
+      },
+    },
+    cellLayouts: {
+      defaultValue: {},
+      navigator: {
+        group: "Cell Layouts",
       },
     },
   },
