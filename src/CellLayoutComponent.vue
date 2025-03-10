@@ -5,17 +5,17 @@ export default {
   setup(props) {
     const { id: rowId, rowIndex } = props.params.node;
     const { data, dataPath, layoutPath, componentContent } = props.params;
-    // provide("bindingContext", {
-    //   parent: null,
-    //   data: {
-    //     ...data,
-    //   },
-    //   index: rowIndex,
-    //   repeatIndex: 0,
-    //   isACopy: true,
-    //   repeatedItems: null,
-    // });
     provide("componentContent", componentContent);
+    provide("bindingContext", {
+      parent: null,
+      data: {
+        ...data,
+      },
+      index: rowIndex,
+      repeatIndex: 0,
+      isACopy: false,
+      repeatedItems: null,
+    });
     return {
       rowId,
       data,

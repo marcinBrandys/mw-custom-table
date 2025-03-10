@@ -632,23 +632,32 @@ export default {
           });
         });
 
-        const existingCellLayoutIds = Object.keys(this.content?.cellLayouts ?? []);
+        const existingCellLayoutIds = Object.keys(this.content?.cellLayouts ?? {});
         const cellLayoutsToAdd = columns
-          .filter(({ id: columnId, dataType }) => dataType === "custom-layout" && !existingCellLayoutIds.includes(`layout-${columnId}`))
-          .reduce((acc, { id: columnId }) => {
-            return {
-              ...acc,
-              [`layout-${columnId}`]: [],
-            }
-          }, {});
-        if (Object.keys(cellLayoutsToAdd).length > 0) {
-          this.$emit("update:content", {
+          .map((column, index) => ({ ...column, index }))
+          .filter(({ id: columnId, dataType }) => dataType === "custom-layout" && !existingCellLayoutIds.includes(`layout-${columnId}`));
+
+        cellLayoutsToAdd.forEach(async ({ id: columnId, index }) => {
+          const cellLayoutContainer = await this.createElement(
+            "ww-flexbox",
+            {
+              _state: {
+                name: `Cell Layout - ${index + 1}`,
+                style: {
+                  default: {
+                    width: "100%",
+                  },
+                },
+              },
+            },
+          );
+          this.$emit("update:content:effect", {
             cellLayouts: {
-              ...this.content?.cellLayouts,
-              ...cellLayoutsToAdd,
+              ...this.content.cellLayouts,
+              [`layout-${columnId}`]: [cellLayoutContainer],
             },
           });
-        }
+        });
       },
     },
     "content.rowConfig.actionButtons": {

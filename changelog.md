@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.15 (10.03.2025)
+
+### Table Custom Cells
+- Possibility to inject custom Layout as a Cell
+- Provide bindings into custom Layout
+
 ## 0.0.14 (26.02.2025)
 
 ### Table Filters
