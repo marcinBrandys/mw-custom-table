@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.16 (13.03.2025)
+
+### Table Custom Cells
+- Changed way of importing AgGrid into Module
+
 ## 0.0.15 (10.03.2025)
 
 ### Table Custom Cells

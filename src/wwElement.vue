@@ -14,6 +14,7 @@
             theme: theme.value,
             suppressCellFocus: true,
           }"
+          :modules="modules"
           :pagination="pagination.enabled"
           :paginationPageSize="pagination.pageSize"
           :paginationPageSizeSelector="pagination.pageSizeSelector"
@@ -37,8 +38,9 @@
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue3";
-import { themeQuartz } from "ag-grid-community";
+import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
+import { themeQuartz } from "@ag-grid-community/theming";
+import { AgGridVue } from "@ag-grid-community/vue3";
 import ActionButtonCellComponent from "./ActionButtonCellComponent.vue";
 import CellComponent from "./CellComponent.vue";
 import CellLayoutComponent from "./CellLayoutComponent.vue";
@@ -575,6 +577,7 @@ export default {
   },
   data() {
     return {
+      modules: [ClientSideRowModelModule],
       api: null,
       displayedRowsCount: 0,
       dataTypeDefinitions: {
