@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.17 (14.03.2025)
+
+### Row Data Loading
+- Type checking of dataSource
+
 ## 0.0.16 (13.03.2025)
 
 ### Table Custom Cells

@@ -201,7 +201,7 @@ export default {
       return [...dataColumns, ...this.actionButtons];
     },
     rowData() {
-      return this.content.dataSource ?? [];
+      return Array.isArray(this.content.dataSource) ? this.content.dataSource : [];
     },
     rowSelection() {
       if (!this.content.rowConfig?.selectionMode) return undefined;
