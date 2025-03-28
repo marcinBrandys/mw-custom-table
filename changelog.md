@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.18 (28.03.2025)
+
+### Styling improvements
+- Possible to choose row size: small, medium, height
+- Possible to set initial column width
+
 ## 0.0.17 (14.03.2025)
 
 ### Row Data Loading

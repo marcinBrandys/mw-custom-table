@@ -59,6 +59,12 @@ const FILTER_DATATYPE_TO_COMPARATOR_MAP = {
 
 const FILTERABLE_DATA_TYPES = ["text", "number", "boolean", "date", "dateString", "timestamp", "object", "custom"];
 
+const ROW_HEIGHT_TO_VERTICAL_PADDING_SCALE = {
+  small: 0.5,
+  medium: 1,
+  large: 2,
+};
+
 export default {
   components: {
     AgGridVue,
@@ -118,6 +124,7 @@ export default {
   },
   computed: {
     theme() {
+      const rowHeight = this.content?.row?.rowHeight ?? "small";
       return {
         key: `custom-theme-${+new Date()}`,
         value: themeQuartz.withParams({
@@ -141,7 +148,7 @@ export default {
           textColor: this.content.color.text,
           rowBorder: true,
           rowHoverColor: this.content.color.foreground,
-          rowVerticalPaddingScale: 0.5,
+          rowVerticalPaddingScale: ROW_HEIGHT_TO_VERTICAL_PADDING_SCALE[rowHeight],
           selectedRowBackgroundColor: this.content.color.foreground,
           sidePanelBorder: true,
           wrapperBorder: true,
@@ -186,6 +193,7 @@ export default {
             },
           } : null;
           const filterColumnConfig = this.buildFilterColumnConfig(column, dataPath);
+          const width = column.width ? Number.parseInt(column.width.split('px')[0]) : undefined;
           return {
             field: dataPath,
             headerName: column.label,
@@ -193,6 +201,7 @@ export default {
             wrapText: true,
             cellDataType: column.dataType ?? true,
             valueGetter: column.dataType === "custom" ? this.buildValueGetter(column.valueGetter) : undefined,
+            width,
             ...filterColumnConfig,
             ...customCellConfig,
             ...customLayoutConfig,

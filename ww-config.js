@@ -68,6 +68,7 @@ export default {
             sortable: true,
             filterable: false,
             visible: true,
+            width: null,
           },
           options: {
             item: {
@@ -162,6 +163,23 @@ export default {
                 bindable: true,
                 type: "OnOff",
               },
+              width: {
+                label: {
+                  en: "Width",
+                },
+                type: "Length",
+                bindable: true,
+                options: {
+                  unitChoices: [
+                    {
+                      value: "px",
+                      label: "px",
+                      min: 1,
+                      max: 1000
+                    },
+                  ]
+                }
+              }
             },
           },
         },
@@ -666,6 +684,58 @@ export default {
           }
         },
       },
+    },
+
+    /* Styles - row */
+    rowSectionInfo: {
+      label: {
+        en: "Row Styles",
+      },
+      type: "Info",
+      options: {
+        text: {
+          en: "Row Styles",
+        },
+      },
+    },
+    row: {
+      type: "Object",
+      defaultValue: {
+        rowHeight: "small",
+      },
+      options: {
+        item: {
+          rowHeight: {
+            label: {
+              en: "Row height",
+            },
+            type: "TextSelect",
+            bindable: true,
+            options: {
+              options: [
+                {
+                  value: "small",
+                  label: {
+                    en: "Small",
+                  },
+                },
+                {
+                  value: "medium",
+                  label: {
+                    en: "Medium",
+                  },
+                },
+                {
+                  value: "large",
+                  label: {
+                    en: "Large",
+                  },
+                },
+              ],
+            },
+          },
+        }
+      }
     },
 
     /* ELEMENTS */
