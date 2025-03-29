@@ -472,22 +472,22 @@ export default {
         case "Custom":
           return {
             textColor: this.content?.color?.text,
-            icon: "uui-cursor-click-02",
+            icon: "apart-icons/cursor-click-02",
           };
         case "EditItem":
           return {
             textColor: this.content?.color?.text,
-            icon: "uui-pencil-01",
+            icon: "apart-icons/pencil-01",
           };
         case "RemoveItem":
           return {
             textColor: this.content?.color?.destructive,
-            icon: "uui-trash-01",
+            icon: "apart-icons/trash-01",
           };
         default:
           return {
             textColor: this.content?.color?.text,
-            icon: "uui-cursor-click-02",
+            icon: "apart-icons/cursor-click-02",
           };
       }
     },

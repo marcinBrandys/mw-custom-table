@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.19 (29.03.2025)
+
+### Icons migration
+- Migrated to new WeWeb icon approach
+
 ## 0.0.18 (28.03.2025)
 
 ### Styling improvements

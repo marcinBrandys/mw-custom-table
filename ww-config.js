@@ -753,7 +753,7 @@ export default {
             },
           },
           content: {
-            icon: "uui-pencil-01",
+            icon: "apart-icons/pencil-01",
           },
         },
         ActionIconButtonElementRemoveItem: {
@@ -768,7 +768,7 @@ export default {
             },
           },
           content: {
-            icon: "uui-trash-01",
+            icon: "apart-icons/trash-01",
           },
         },
       },

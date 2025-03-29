@@ -1,6 +1,6 @@
 {
   "name": "mywork-component-table",
-  "version": "0.0.16",
+  "version": "0.0.19",
   "scripts": {
     "build": "weweb build",
     "serve": "weweb serve"
