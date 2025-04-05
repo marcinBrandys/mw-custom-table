@@ -15,9 +15,9 @@
             suppressCellFocus: true,
           }"
           :modules="modules"
-          :pagination="pagination.enabled"
-          :paginationPageSize="pagination.pageSize"
-          :paginationPageSizeSelector="pagination.pageSizeSelector"
+          :pagination="gridPagination.enabled"
+          :paginationPageSize="gridPagination.pageSize"
+          :paginationPageSizeSelector="gridPagination.pageSizeSelector"
           :rowSelection="rowSelection"
           @grid-ready="onGridReady"
           @first-data-rendered="onFirstDataRendered"
@@ -33,6 +33,11 @@
           @column-header-clicked="onColumnHeaderClicked"
       >
       </ag-grid-vue>
+      <ServerSidePaginatorComponent
+          v-if="serverSidePagination.enabled && serverSidePagination.state"
+          :state="serverSidePagination.state"
+          @on-page-change="onServerSidePaginationPageChange"
+      ></ServerSidePaginatorComponent>
     </div>
   </div>
 </template>
@@ -44,6 +49,7 @@ import { AgGridVue } from "@ag-grid-community/vue3";
 import ActionButtonCellComponent from "./ActionButtonCellComponent.vue";
 import CellComponent from "./CellComponent.vue";
 import CellLayoutComponent from "./CellLayoutComponent.vue";
+import ServerSidePaginatorComponent from "./ServerSidePaginatorComponent.vue";
 
 const DATATYPE_TO_WW_ELEMENT_MAP = {
   "button-element": "ww-button",
@@ -71,6 +77,7 @@ export default {
     ActionButtonCellComponent,
     CellComponent,
     CellLayoutComponent,
+    ServerSidePaginatorComponent,
   },
   props: {
     content: { type: Object, required: true },
@@ -240,15 +247,54 @@ export default {
         },
       }] : [];
     },
-    pagination() {
+    paginationType() {
+      return this.content?.pagination?.type ?? "FE";
+    },
+    isFEPaginationEnabled() {
+      return Boolean(this.content?.pagination?.enabled) && this.paginationType === "FE";
+    },
+    isBEPaginationEnabled() {
+      return Boolean(this.content?.pagination?.enabled) && this.paginationType === "BE";
+    },
+    gridPagination() {
       return {
-        enabled: this.content?.pagination?.enabled ?? false,
+        enabled: this.isFEPaginationEnabled,
         pageSize: this.content?.pagination?.pageSize ?? 50,
         pageSizeSelector: this.isArrayPropDefined(this.content?.pagination?.pageSizeOptions)
             ? this.content?.pagination?.pageSizeOptions
             : [10, 25, 50, 100],
       };
     },
+    serverSidePagination() {
+      if (!this.isBEPaginationEnabled) {
+        return {
+          enabled: false,
+          state: null,
+        };
+      }
+
+      try {
+        const state = this.content?.pagination?.customPagingStateObject;
+        return {
+          enabled: true,
+          state: {
+            page_size: state.page_size,
+            page: state.page,
+            offset: state.offset,
+            total_items: state.total_items,
+            prev_page: state.prev_page,
+            next_page: state.next_page,
+            total_pages: state.total_pages,
+          },
+        };
+      } catch (error) {
+        console.error("Table Component: Invalid Custom Paging State provided. Please check object schema in 'Expected format' section.")
+        return {
+          enabled: false,
+          state: null,
+        };
+      }
+    }
   },
   methods: {
     /* wwEditor:start */
@@ -438,6 +484,14 @@ export default {
           column: {
             fieldName: column.colDef.field,
           },
+        },
+      });
+    },
+    onServerSidePaginationPageChange(page) {
+      this.$emit("trigger-event", {
+        name: "onServerSidePaginationPageChange",
+        event: {
+          page,
         },
       });
     },

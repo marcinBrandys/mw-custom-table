@@ -352,8 +352,10 @@ export default {
       type: "Object",
       defaultValue: {
         enabled: true,
+        type: "FE",
         pageSize: 25,
         pageSizeOptions: [10, 25, 50, 100],
+        customPagingStateObject: null,
       },
       options: {
         item: {
@@ -365,12 +367,31 @@ export default {
             defaultValue: true,
             bindable: true,
           },
+          type: {
+            label: {
+              en: "Pagination Type",
+            },
+            type: "TextSelect",
+            defaultValue: "FE",
+            hidden: (content) => {
+              return !content?.pagination?.enabled;
+            },
+            options: {
+              options: [
+                { value: "FE", label: "Client Side" },
+                { value: "BE", label: "Server Side" },
+              ],
+            },
+          },
           pageSize: {
             label: {
               en: "Default page size",
             },
             type: "Number",
             defaultValue: 50,
+            hidden: (content) => {
+              return !content?.pagination?.enabled;
+            },
             bindable: true,
             options: {
               min: 1,
@@ -385,6 +406,9 @@ export default {
             type: "Array",
             defaultValue: [10, 25, 50, 100],
             bindable: true,
+            hidden: (content) => {
+              return !content?.pagination?.enabled;
+            },
             options: {
               fixed: false,
               item: {
@@ -400,6 +424,35 @@ export default {
               },
             },
           },
+          customPagingStateObject: {
+            label: {
+              en: "Custom Paging State",
+            },
+            type: "Text",
+            defaultValue: null,
+            hidden: (content) => {
+              return !content?.pagination?.enabled || content?.pagination?.type !== "BE";
+            },
+            bindable: true,
+            /* wwEditor:start */
+            bindingValidation: {
+              validations: [
+                {
+                  type: 'object',
+                },
+              ],
+              tooltip: 'Object representation of current paging: \n\n`{\n' +
+                  '    "page_size": 50,\n' +
+                  '    "page": 1,\n' +
+                  '    "offset": 0,\n' +
+                  '    "total_items": 56,\n' +
+                  '    "prev_page": null,\n' +
+                  '    "next_page": 2,\n' +
+                  '    "total_pages": 2\n' +
+                  '  }`',
+            },
+            /* wwEditor:end */
+          }
         },
       },
     },
@@ -957,6 +1010,15 @@ export default {
         column: {
           fieldName: "field",
         },
+      },
+    },
+    {
+      name: "onServerSidePaginationPageChange",
+      label: {
+        en: "onServerSidePaginationPageChange: Triggered when Server Side Pagination selected and page changed. Please remember to re-fetch data source and update Custom Paging State object",
+      },
+      event: {
+        page: 2,
       },
     },
   ],
