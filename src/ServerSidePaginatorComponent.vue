@@ -5,10 +5,13 @@ const SIBLING_COUNT = 2;
 export default {
   props: {
     state: { type: Object, required: true },
+    colorConfig: { type: Object, required: true },
+    borderConfig: { type: Object, required: true },
+    pagingElementsConfig: { type: Object, required: true },
   },
   emits: ["onPageChange"],
   setup(props, { emit }) {
-    const { state } = toRefs(props)
+    const { state, borderConfig, pagingElementsConfig } = toRefs(props);
     const pages = computed(() => {
       return [...Array(state.value.total_pages).keys()].map((i) => {
         return {
@@ -48,8 +51,19 @@ export default {
 </script>
 
 <template>
-  <div class="custom-table--server-side-paginator--wrapper">
-    <button @click="changePage(prevPage)" :disabled="prevPage === null" class="custom-table--server-side-paginator--nav-button">Back</button>
+  <div class="custom-table--server-side-paginator--wrapper" :style="{ borderColor: borderConfig?.color, borderRadius: borderConfig?.radius }">
+    <div>
+      <div
+        v-if="prevPage !== null && pagingElementsConfig?.PrevPageButtonElement"
+        class="custom-table--server-side-paginator--nav-button"
+        @click="changePage(prevPage)"
+        :style="{ borderColor: borderConfig?.color }"
+      >
+        <wwElement
+          v-bind="pagingElementsConfig.PrevPageButtonElement"
+        ></wwElement>
+      </div>
+    </div>
     <div class="custom-table--server-side-paginator--page-picker">
       <button
         v-for="page in pages"
@@ -58,9 +72,21 @@ export default {
         class="custom-table--server-side-paginator--page-button"
         :class="{'custom-table--server-side-paginator--page-button--active': page.isActive, 'custom-table--server-side-paginator--page-button--skipped': page.isSkipped}"
         :disabled="page.isSkipped || page < 0"
+        :style="{ color: page.isActive ? colorConfig?.text : colorConfig?.tertiary, backgroundColor: page.isActive ? colorConfig?.backgroundActive : 'inherit' }"
       >{{ !page.isSkipped ? page.index : "..." }}</button>
     </div>
-    <button @click="changePage(nextPage)" :disabled="nextPage === null" class="custom-table--server-side-paginator--nav-button">Next</button>
+    <div>
+      <div
+        v-if="nextPage !== null && pagingElementsConfig?.NextPageButtonElement"
+        class="custom-table--server-side-paginator--nav-button"
+        @click="changePage(nextPage)"
+        :style="{ borderColor: borderConfig?.color }"
+      >
+        <wwElement
+          v-bind="pagingElementsConfig.NextPageButtonElement"
+        ></wwElement>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -73,8 +99,7 @@ export default {
   align-items: center;
   width: 100%;
   padding: 8px 24px;
-  border: 1px solid #E9EAEB;
-  border-radius: 8px;
+  border: 1px solid;
 }
 .custom-table--server-side-paginator--page-picker {
   display: flex;
@@ -88,7 +113,6 @@ export default {
   display: block;
   height: 40px;
   min-width: 40px;
-  color: #535862;
   border-radius: 8px;
   padding: 10px 8px 10px;
   font-size: 14px;
@@ -96,19 +120,12 @@ export default {
   text-align: center;
   cursor: pointer;
   margin: 0 2px;
-  &--active {
-    color: #252837;
-    background-color: #fafafa;
-  }
   &--skipped {
     cursor: default;
     pointer-events: none;
     &:hover {
       cursor: default;
     }
-  }
-  &:hover {
-    background-color: #fafafa;
   }
 }
 .custom-table--server-side-paginator--nav-button {
@@ -119,16 +136,7 @@ export default {
   text-align: center;
   padding: 8px 12px;
   cursor: pointer;
-  color: #535862;
-  border: 1px solid #535862;
+  border: 1px solid;
   border-radius: 8px;
-  &:hover {
-    background-color: #fafafa;
-  }
-  &:disabled {
-    pointer-events: none;
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
 }
 </style>

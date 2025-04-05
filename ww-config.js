@@ -390,7 +390,7 @@ export default {
             type: "Number",
             defaultValue: 50,
             hidden: (content) => {
-              return !content?.pagination?.enabled;
+              return !content?.pagination?.enabled || content?.pagination?.type !== "FE";;
             },
             bindable: true,
             options: {
@@ -407,7 +407,7 @@ export default {
             defaultValue: [10, 25, 50, 100],
             bindable: true,
             hidden: (content) => {
-              return !content?.pagination?.enabled;
+              return !content?.pagination?.enabled || content?.pagination?.type !== "FE";
             },
             options: {
               fixed: false,
@@ -538,6 +538,7 @@ export default {
         backgroundActive: "#FAFAFA",
         text: "#181D27",
         destructive: "#C53434",
+        tertiary: "#535862",
       },
       options: {
         item: {
@@ -579,6 +580,13 @@ export default {
           destructive: {
             label: {
               en: "Destructive color",
+            },
+            type: "Color",
+            bindable: true,
+          },
+          tertiary: {
+            label: {
+              en: "Tertiary color",
             },
             type: "Color",
             bindable: true,
@@ -827,6 +835,35 @@ export default {
       },
       navigator: {
         group: "Action Button Elements",
+      },
+    },
+    pagingElements: {
+      defaultValue: {
+        PrevPageButtonElement: {
+          isWwObject: true,
+          type: "ww-icon",
+          _state: {
+            name: "Prev Page Icon Button",
+          },
+          content: {
+            icon: "apart-icons/arrow-left",
+            color: "#181D27",
+          },
+        },
+        NextPageButtonElement: {
+          isWwObject: true,
+          type: "ww-icon",
+          _state: {
+            name: "Next Page Icon Button",
+          },
+          content: {
+            icon: "apart-icons/arrow-right",
+            color: "#181D27",
+          },
+        },
+      },
+      navigator: {
+        group: "Paging Elements",
       },
     },
     cellElements: {

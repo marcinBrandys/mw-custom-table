@@ -36,6 +36,9 @@
       <ServerSidePaginatorComponent
           v-if="serverSidePagination.enabled && serverSidePagination.state"
           :state="serverSidePagination.state"
+          :color-config="content?.color"
+          :border-config="content?.border"
+          :paging-elements-config="content?.pagingElements"
           @on-page-change="onServerSidePaginationPageChange"
       ></ServerSidePaginatorComponent>
     </div>
