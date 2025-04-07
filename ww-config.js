@@ -444,7 +444,6 @@ export default {
               tooltip: 'Object representation of current paging: \n\n`{\n' +
                   '    "page_size": 50,\n' +
                   '    "page": 1,\n' +
-                  '    "offset": 0,\n' +
                   '    "total_items": 56,\n' +
                   '    "prev_page": null,\n' +
                   '    "next_page": 2,\n' +

@@ -278,17 +278,19 @@ export default {
 
       try {
         const state = this.content?.pagination?.customPagingStateObject;
-        return {
+        return state ? {
           enabled: true,
           state: {
             page_size: state.page_size,
             page: state.page,
-            offset: state.offset,
             total_items: state.total_items,
             prev_page: state.prev_page,
             next_page: state.next_page,
             total_pages: state.total_pages,
           },
+        } : {
+          enabled: false,
+          state: null,
         };
       } catch (error) {
         console.error("Table Component: Invalid Custom Paging State provided. Please check object schema in 'Expected format' section.")
