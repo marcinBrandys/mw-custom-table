@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.20 (07.04.2025)
+
+### Server Side Paging
+- Prepared possibility of Server Side Paging
+
 ## 0.0.19 (29.03.2025)
 
 ### Icons migration
